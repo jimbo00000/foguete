@@ -197,8 +197,8 @@ function graphics.setbpm(bpm)
     Scene.BPM = bpm
 end
 
--- A lost of handlers for different track name-value pairs coming from Rocket
--- or a saved list of keyframes.
+-- A table of handlers for different track name-value pairs coming from
+-- either the Rocket editor or a saved list of keyframes.
 graphics.sync_callbacks = {
     ["Scene"] = function(i)
         local s = scene_modules[i]
@@ -206,6 +206,9 @@ graphics.sync_callbacks = {
     end,
     ["PostFx"] = function(i)
         graphics.switch_to_effect(i)
+    end,
+    ["tri.rotationz"] = function(i)
+        if Scene.rotationz then Scene.rotationz = i end
     end,
     -- Add new keyframe names here
 }

@@ -14,6 +14,10 @@ local vbos = {}
 local vao = 0
 local prog = 0
 
+-- Sync variables
+vsfstri.rotationz = 0
+
+
 local basic_vert = [[
 #version 330
 
@@ -114,7 +118,11 @@ function vsfstri.render_for_one_eye(view, proj)
     gl.UseProgram(prog)
     gl.UniformMatrix4fv(upr_loc, 1, GL.FALSE, glFloatv(16, proj))
 
-    gl.UniformMatrix4fv(umv_loc, 1, GL.FALSE, glFloatv(16, view))
+    local m = {}
+    for i=1,16 do m[i] = view[i] end
+    mm.glh_rotate(m, vsfstri.rotationz, 0,0,1)
+
+    gl.UniformMatrix4fv(umv_loc, 1, GL.FALSE, glFloatv(16, m))
     gl.BindVertexArray(vao)
     gl.DrawElements(GL.TRIANGLES, 6*3*2, GL.UNSIGNED_INT, nil)
     gl.BindVertexArray(0)
