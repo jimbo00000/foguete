@@ -13,11 +13,16 @@ color="ffa9b250">
 		<key row="8" value="45.000000" interpolation="1" />
 		<key row="16" value="0.000000" interpolation="1" />
 		<key row="24" value="45.000000" interpolation="1" />
-		<key row="32" value="-45.000000" interpolation="1" />
-		<key row="40" value="0.000000" interpolation="1" />
-		<key row="48" value="-45.000000" interpolation="1" />
-		<key row="56" value="0.000000" interpolation="1" />
-		<key row="64" value="-45.000000" interpolation="1" />
+		<key row="32" value="0.000000" interpolation="1" />
+		<key row="40" value="45.000000" interpolation="1" />
+		<key row="48" value="0.000000" interpolation="1" />
+		<key row="56" value="45.000000" interpolation="1" />
+		<key row="64" value="0.000000" interpolation="1" />
+	</track>
+	<track name="tri.rotationy" folded="0" muteKeyCount="0"
+color="ff60b250">
+		<key row="0" value="0.000000" interpolation="0" />
+		<key row="32" value="180.000000" interpolation="1" />
 	</track>
 </tracks>
 	</rootElement>

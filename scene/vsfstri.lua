@@ -15,6 +15,7 @@ local vao = 0
 local prog = 0
 
 -- Sync variables
+vsfstri.rotationy = 0
 vsfstri.rotationz = 0
 
 
@@ -120,6 +121,7 @@ function vsfstri.render_for_one_eye(view, proj)
 
     local m = {}
     for i=1,16 do m[i] = view[i] end
+    mm.glh_rotate(m, vsfstri.rotationy, 0,1,0)
     mm.glh_rotate(m, vsfstri.rotationz, 0,0,1)
 
     gl.UniformMatrix4fv(umv_loc, 1, GL.FALSE, glFloatv(16, m))

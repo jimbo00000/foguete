@@ -207,6 +207,9 @@ graphics.sync_callbacks = {
     ["PostFx"] = function(i)
         graphics.switch_to_effect(i)
     end,
+    ["tri.rotationy"] = function(i)
+        if Scene.rotationy then Scene.rotationy = i end
+    end,
     ["tri.rotationz"] = function(i)
         if Scene.rotationz then Scene.rotationz = i end
     end,
