@@ -210,8 +210,15 @@ function main()
     glfw.glfw.Init()
 
     glfw.glfw.WindowHint(glfw.GLFW.DEPTH_BITS, 16)
-    glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MAJOR, 4)
-    glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MINOR, 3) -- 3 causes MacOSX to segfault
+    if ffi.os == "OSX" then
+        -- GL context 4.3 request causes MacOS to segfault.
+        -- Maybe Apple lacks the resources to implement current standard support.
+        glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MAJOR, 3)
+        glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MINOR, 3)
+    else
+        glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MAJOR, 4)
+        glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MINOR, 3)
+    end
     glfw.glfw.WindowHint(glfw.GLFW.OPENGL_FORWARD_COMPAT, 1)
     glfw.glfw.WindowHint(glfw.GLFW.OPENGL_PROFILE, glfw.GLFW.OPENGL_CORE_PROFILE)
     if DEBUG then
