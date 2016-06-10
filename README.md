@@ -15,21 +15,21 @@ Launch the `main_glfw` app with the `debug` parameter. Use the mouse to rotate o
 luajit main_glfw.lua debug
 ```
 
-Add new scene files to `graphics.lua` here: [graphics.lua#L33](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L33]
+Add new scene files to `graphics.lua` here: [graphics.lua#L33](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L33)
 
 
 ### Choreography
 
-Launch the editor app from `bin/`.
-Open saved keyframes from `kf/`.
-Launch the `main_demo` app with the `sync` parameter.
-Add a new variable to a scene module (module scoped for external access).
-Add a new keyframe handler to `graphics.lua` here: [graphics.lua#L230](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L230)
+Launch the editor app from `bin/`.  
+Open saved keyframes from `kf/`.  
+Launch the `main_demo` app with the `sync` parameter.  
+Add a new variable to a scene module (module scoped for external access).  
+Add a new keyframe handler to `graphics.lua` here: [graphics.lua#L230](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L230)  
 
-Press space in the editor to play/pause.
-Scrub with the mousewheel.
-Edit.
-Repeat.
+Press space in the editor to play/pause.  
+Scrub with the mousewheel.  
+Edit.  
+Repeat.  
 
 
 ### Release
