@@ -23,8 +23,8 @@ square.scale = 1
 local basic_vert = [[
 #version 330
 
-in vec4 vPosition;
-in vec4 vColor;
+layout (location = 0) in vec4 vPosition;
+layout (location = 1) in vec4 vColor;
 
 out vec3 vfColor;
 
@@ -59,25 +59,22 @@ local function init_cube_attributes()
         0,1,0,
         })
 
-    local vpos_loc = gl.GetAttribLocation(prog, "vPosition")
-    local vcol_loc = gl.GetAttribLocation(prog, "vColor")
-
     local vvbo = glIntv(0)
     gl.GenBuffers(1, vvbo)
     gl.BindBuffer(GL.ARRAY_BUFFER, vvbo[0])
     gl.BufferData(GL.ARRAY_BUFFER, ffi.sizeof(verts), verts, GL.STATIC_DRAW)
-    gl.VertexAttribPointer(vpos_loc, 3, GL.FLOAT, GL.FALSE, 0, nil)
+    gl.VertexAttribPointer(0, 3, GL.FLOAT, GL.FALSE, 0, nil)
     table.insert(vbos, vvbo)
 
     local cvbo = glIntv(0)
     gl.GenBuffers(1, cvbo)
     gl.BindBuffer(GL.ARRAY_BUFFER, cvbo[0])
     gl.BufferData(GL.ARRAY_BUFFER, ffi.sizeof(verts), verts, GL.STATIC_DRAW)
-    gl.VertexAttribPointer(vcol_loc, 3, GL.FLOAT, GL.FALSE, 0, nil)
+    gl.VertexAttribPointer(1, 3, GL.FLOAT, GL.FALSE, 0, nil)
     table.insert(vbos, cvbo)
 
-    gl.EnableVertexAttribArray(vpos_loc)
-    gl.EnableVertexAttribArray(vcol_loc)
+    gl.EnableVertexAttribArray(0)
+    gl.EnableVertexAttribArray(1)
 
     local quads = glUintv(2*3, {
         0,1,2,
