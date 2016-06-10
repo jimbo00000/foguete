@@ -18,6 +18,7 @@ local prog = 0
 square.rotationy = 0
 square.rotationz = 0
 square.scale = 1
+square.heights = {0,0,0,0}
 
 
 local basic_vert = [[
@@ -122,11 +123,13 @@ function square.render_for_one_eye(view, proj)
     for h=0,3 do
         local m = {}
         for i=1,16 do m[i] = view[i] end
-        mm.glh_rotate(m, square.rotationy, 0,1,0)
-        mm.glh_rotate(m, square.rotationz, 0,0,1)
+        --mm.glh_rotate(m, square.rotationy, 0,1,0)
+        --mm.glh_rotate(m, square.rotationz, 0,0,1)
         local s = .5
         mm.glh_scale(m, s,s,s)
-        mm.glh_translate(m, h-2,0,0)
+        local x = h-2
+        local y = -1 + 2*square.heights[h+1]
+        mm.glh_translate(m, x,y,0)
 
         gl.UniformMatrix4fv(umv_loc, 1, GL.FALSE, glFloatv(16, m))
         gl.BindVertexArray(vao)

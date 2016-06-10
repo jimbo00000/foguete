@@ -214,6 +214,19 @@ graphics.sync_callbacks = {
     ["tri.rotationz"] = function(i)
         if Scene.rotationz then Scene.rotationz = i end
     end,
+    ["sq.h1"] = function(i)
+        if Scene.heights then Scene.heights[1] = i end
+    end,
+    ["sq.h2"] = function(i)
+        if Scene.heights then Scene.heights[2] = i end
+    end,
+    ["sq.h3"] = function(i)
+        if Scene.heights then Scene.heights[3] = i end
+    end,
+    ["sq.h4"] = function(i)
+        if Scene.heights then Scene.heights[4] = i end
+    end,
+
     -- Add new keyframe names here
 }
 
