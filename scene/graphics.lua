@@ -32,6 +32,7 @@ end
 
 local scene_modules = {
     "scene.vsfstri",
+    "scene.square",
 }
 local scene_module_idx = 1
 function graphics.switch_scene(reverse)
