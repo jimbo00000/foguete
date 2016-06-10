@@ -73,25 +73,21 @@ function rocket.create_track(name)
 end
 
 function key_interp(k0, k1, row)
-	-- TODO: using an array and table.insert, consecutive keys can be neighbors
-	local step = k0.interp
-	local t = (row - k0.row) / (k1.row - k0.row)
-	if step == rocket.KEY_STEP then
-		return k0.val
-	elseif step == rocket.KEY_LINEAR then
-		return k0.val + (k1.val - k0.val) * t
-	elseif step == rocket.KEY_SMOOTH then
-		t = t * t * (3 - 2 * t)
-		return k0.val + (k1.val - k0.val) * t
-	elseif step == rocket.KEY_RAMP then
-		t = math.pow(t, 2)
-		return k0.val + (k1.val - k0.val) * t
-	else
-		return 0
-	end
+    local step = k0.interp
+    if step == rocket.KEY_STEP then
+        return k0.val
+    end
+    local t = (row - k0.row) / (k1.row - k0.row)
+    if step == rocket.KEY_SMOOTH then
+        t = t * t * (3 - 2 * t)
+    elseif step == rocket.KEY_RAMP then
+        t = math.pow(t, 2)
+    end
+    return k0.val + (k1.val - k0.val) * t
 end
 
 function rocket.get_value(name, row)
+    -- TODO: using an array and table.insert, consecutive keys can be neighbors
 	-- TODO: index by name for no search
 	for k, v in pairs(rocket.sync_tracks) do
 		if v.name == name then
