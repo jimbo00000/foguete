@@ -52,7 +52,7 @@ void main()
 
 
 local function init_cube_attributes()
-    local verts = glFloatv(3*8, {
+    local verts = glFloatv(3*4, {
         0,0,0,
         1,0,0,
         1,1,0,
@@ -79,7 +79,7 @@ local function init_cube_attributes()
     gl.EnableVertexAttribArray(vpos_loc)
     gl.EnableVertexAttribArray(vcol_loc)
 
-    local quads = glUintv(6*6, {
+    local quads = glUintv(2*3, {
         0,1,2,
         0,2,3,
     })
@@ -133,7 +133,7 @@ function square.render_for_one_eye(view, proj)
 
         gl.UniformMatrix4fv(umv_loc, 1, GL.FALSE, glFloatv(16, m))
         gl.BindVertexArray(vao)
-        gl.DrawElements(GL.TRIANGLES, 6*3*2, GL.UNSIGNED_INT, nil)
+        gl.DrawElements(GL.TRIANGLES, 3*2, GL.UNSIGNED_INT, nil)
         gl.BindVertexArray(0)
     end
 
