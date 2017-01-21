@@ -1,8 +1,8 @@
 local ffi  = require( "ffi" )
 local libs = ffi_Bass_libs or {
    OSX     = { x86 = "libbass.dylib",       x64 = "libbass.dylib" },
-   Windows = { x86 = "Bass.dll", x64 = "" },
-   Linux   = { x86 = "libbass.so",    x64 = "libbass.so", arm = ""  },
+   Windows = { x86 = "bass.dll", x64 = "" },
+   Linux   = { x86 = "libbass.so",    x64 = "libbass.so", arm = "libbass.so"  },
    BSD     = { },
    POSIX   = { },
    Other   = { }, 
@@ -57,6 +57,11 @@ ffi.cdef [[
     QWORD BASS_ChannelGetPosition(DWORD handle, DWORD mode);
     QWORD BASS_ChannelSeconds2Bytes(DWORD handle, double pos);
     double BASS_ChannelBytes2Seconds(DWORD handle, QWORD pos);
+
+    HSAMPLE BASS_SampleLoad(BOOL mem, const void *file, QWORD offset, DWORD length, DWORD max, DWORD flags);
+    HCHANNEL BASS_SampleGetChannel(HSAMPLE handle, BOOL onlynew);
+
+    int BASS_ErrorGetCode();
 ]]
 
 return bass

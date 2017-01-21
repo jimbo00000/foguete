@@ -7,6 +7,9 @@ if (ffi.os == "Windows") then
     package.cpath = package.cpath .. ';bin/windows/socket/core.dll'
     package.loadlib("socket/core.dll", "luaopen_socket_core")
     socket = require 'socket.core'
+elseif (ffi.os == "Linux") then
+    package.cpath = package.cpath .. ';bin/linux/socket/?.so'
+    socket = require 'socket.core'
 end
 
 rocket = {}
@@ -161,7 +164,7 @@ local function receive_float32(o)
 		local as_int = cast ( int32_p , buff )[0]
 		return band ( as_int , 0x7F800000 ) == 0x7F800000
 			and band ( as_int , 0x7FFFFF ) ~= 0
-	end 
+	end
 
 	local b = o:receive(4)
 	if not b then return 0 end

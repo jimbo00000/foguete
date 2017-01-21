@@ -7,10 +7,25 @@ if (ffi.os == "Windows") then
     package.cpath = package.cpath .. ';bin/windows/socket/core.dll'
     package.loadlib("socket/core.dll", "luaopen_socket_core")
     socket = require 'socket.core'
+elseif (ffi.os == "Linux") then
+    package.cpath = package.cpath .. ';bin/linux/socket/?.so'
+    socket = require 'socket.core'
 end
 local fpstimer = require("util.fpstimer")
 
-local bass = require("bass")
+-- http://stackoverflow.com/questions/17877224/how-to-prevent-a-lua-script-from-failing-when-a-require-fails-to-find-the-scri
+local function prequire(m)
+  local ok, err = pcall(require, m)
+  if not ok then return nil, err end
+  return err
+end
+
+local bass, err = prequire("bass")
+if bass == nil then
+    print("main_demo.lua: Could not load Bass library: "..err)
+end
+
+
 local glfw = require("glfw")
 local openGL = require("opengl")
 openGL.loader = glfw.glfw.GetProcAddress
@@ -189,7 +204,7 @@ function main()
     glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MINOR, 1)
     glfw.glfw.WindowHint(glfw.GLFW.OPENGL_FORWARD_COMPAT, 1)
     glfw.glfw.WindowHint(glfw.GLFW.OPENGL_PROFILE, glfw.GLFW.OPENGL_CORE_PROFILE)
-    
+
     window = glfw.glfw.CreateWindow(win_w,win_h,windowTitle,monitor,nil)
     glfw.glfw.MakeContextCurrent(window)
 
