@@ -4,9 +4,9 @@ local bit = require("bit")
 local ffi = require("ffi")
 local rk = require("rocket")
 if (ffi.os == "Windows") then
-    --TODO: how do I link to socket package on Linux?
+    package.cpath = package.cpath .. ';bin/windows/socket/core.dll'
     package.loadlib("socket/core.dll", "luaopen_socket_core")
-    local socket = require("socket.core")
+    socket = require 'socket.core'
 end
 local fpstimer = require("util.fpstimer")
 

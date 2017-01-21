@@ -20,9 +20,10 @@ Add new scene files to `graphics.lua` here: [graphics.lua#L33](https://github.co
 
 ### Choreography
 
-Launch the editor app from `bin/`.  
-Open saved keyframes from `kf/`.  
-Launch the `main_demo` app with the `sync` parameter.  
+Launch the editor app: `bin/GLeditor.exe`.  
+From there, open the file `keyframes/kfs.rocket`.  
+Launch the `main_demo` app with the `sync` parameter: `bin\windows\luajit main_demo.lua sync`  
+Play back the demo by pressing space in the editor.  
 Add a new variable to a scene module (module scoped for external access).  
 Add a new keyframe handler to `graphics.lua` here: [graphics.lua#L230](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L230)  
 

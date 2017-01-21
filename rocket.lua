@@ -4,9 +4,9 @@ local ffi = require( "ffi" )
 print(ffi.os)
 local socket = nil
 if (ffi.os == "Windows") then
-    --TODO: how do I link to socket package on Linux?
+    package.cpath = package.cpath .. ';bin/windows/socket/core.dll'
     package.loadlib("socket/core.dll", "luaopen_socket_core")
-    socket = require("socket.core")
+    socket = require 'socket.core'
 end
 
 rocket = {}
