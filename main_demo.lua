@@ -190,7 +190,7 @@ function main()
 
     glfw.glfw.Init()
 
-    local windowTitle = "Sechs"
+    local windowTitle = "Your Demo Here"
     local monitor = nil
     if fullscreen == true then monitor = glfw.glfw.GetPrimaryMonitor() end
     if monitor then
