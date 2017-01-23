@@ -269,7 +269,9 @@ function rocket.receive_and_process_command_demo(obj, row, cbs)
 			local tidx = t + 1
 			kk = {row = r, val = v, interp = string.byte(f)}
 			-- Insert into sparse array
-			rocket.sync_tracks[tidx].keys[r] = kk
+			if rocket.sync_tracks[tidx] then
+				rocket.sync_tracks[tidx].keys[r] = kk
+			end
 		end
 	elseif bcmd == rocket.DELETE_KEY then
 		local track = receive_int32(obj)
@@ -306,10 +308,12 @@ function rocket.sync_update(obj, row, cbs)
 		retval = rocket.receive_and_process_command_demo(obj, row, cbs)
 	until table.getn(r) == 0
 
-	if row ~= rocket.last_sent_row then
-		rocket.last_sent_row = row
-		obj:send(string.char(rocket.SET_ROW))
-		rocket.send_int32(obj, row)
+	if cbs[3]() == true then
+		if row ~= rocket.last_sent_row then
+			rocket.last_sent_row = row
+			obj:send(string.char(rocket.SET_ROW))
+			rocket.send_int32(obj, row)
+		end
 	end
 
 	return retval
