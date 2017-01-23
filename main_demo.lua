@@ -25,7 +25,6 @@ if bass == nil then
     print("main_demo.lua: Could not load Bass library: "..err)
 end
 
-
 local glfw = require("glfw")
 local openGL = require("opengl")
 openGL.loader = glfw.glfw.GetProcAddress
@@ -39,7 +38,14 @@ local win_h = 600
 
 local g_ft = fpstimer.create()
 
+--[[
+    Music attributes:
+    SimpleBeat.wav - length 3.2s, 8 beats
+    8 / 3.2 == 2.5 beats.second *60 == 150 bpm
+]]
 local bpm = 150
+local song_end = 3.2
+
 local rpb = 8 -- rows per beat
 local row_rate = (bpm / 60) * rpb
 local row_time = 0.0
@@ -227,12 +233,7 @@ function main()
 
     local init_ret = bass.BASS_Init(-1, 44100, 0, 0, nil)
     stream = bass.BASS_StreamCreateFile(false, "data/SimpleBeat.wav", 0, 0, bass.BASS_STREAM_PRESCAN)
-    --[[
-        SimpleBeat.wav - length 3.2s, 8 beats
-        8 / 3.2 == 2.5 beats.second *60 == 150 bpm
-    ]]
-    bpm = 150
-    local song_end = 3.2
+
     gfx.setbpm(bpm)
     --gfx.reset_camera_to_initial()
 
