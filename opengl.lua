@@ -2155,14 +2155,14 @@ local function constant_replace(name, value)
 	return ""
 end
 
-glheader = glheader:gsub("#define GL_(%S+)%s+(%S+)\n", constant_replace)
+glheader = glheader:gsub("#define (%S+)%s+(%S+)\n", constant_replace)
 
 ffi.cdef(glheader)
 
 local gl_mt = {
 	__index = function(self, name)
-		local glname = "gl" .. name
-		local procname = "PFNGL" .. name:upper() .. "PROC"
+		local glname = name
+		local procname = "PFN" .. name:upper() .. "PROC"
 		local func = ffi.cast(procname, openGL.loader(glname))
 		rawset(self, name, func)
 		return func

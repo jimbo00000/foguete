@@ -122,7 +122,7 @@ end
 function resize(window, w, h)
     win_w = w
     win_h = h
-    gl.Viewport(0,0, win_w, win_h)
+    gl.glViewport(0,0, win_w, win_h)
     gfx.resize(w, h)
 end
 
@@ -148,6 +148,14 @@ function dofile(filename)
 end
 
 function main()
+
+    local a = ffi.new("int[1]")
+    local b = ffi.new("int[1]")
+    local c = ffi.new("int[1]")
+    glfw.glfw.GetVersion(a,b,c)
+    print(a[0],b[0],c[0])
+
+
     if arg[1] and arg[1] == "sync" then
         SYNC_PLAYER = 1
     end
@@ -215,12 +223,6 @@ function main()
         glfw.glfw.SetInputMode(window, glfw.GLFW.CURSOR, glfw.GLFW.CURSOR_HIDDEN)
     end
 
-    if vsync then
-        glfw.glfw.SwapInterval(1)
-    else
-        glfw.glfw.SwapInterval(0)
-    end
-
     initGL()
     resize(window, win_w, win_h)
 
@@ -238,6 +240,12 @@ function main()
     bass.BASS_Start()
     bass.BASS_ChannelPlay(stream, false)
 
+    --if true then
+        glfw.glfw.SwapInterval(1)
+   -- else
+        --glfw.glfw.SwapInterval(0)
+    --end
+
     g_lastFrameTime = 0
     local gcc = 0 -- collect garbage every n cycles
     while glfw.glfw.WindowShouldClose(window) == 0 do
@@ -252,6 +260,16 @@ function main()
         glfw.glfw.PollEvents()
         g_ft:onFrame()
         display()
+
+        local clock = os.clock
+        if socket then
+            clock = socket.gettime
+        end
+        function sleep(n)  -- seconds
+          local t0 = clock()
+          while clock() - t0 <= n do end
+        end
+        sleep(1/60)
 
         local now = bass_get_time()
         timestep(now, now - g_lastFrameTime)

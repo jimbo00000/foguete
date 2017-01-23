@@ -261,6 +261,50 @@ function matrixmath.glh_ortho(m, l, r, b, t, n, f)
     m[16] = 1
 end
 
+-- http://www.cg.info.hiroshima-cu.ac.jp/~miyazaki/knowledge/teche52.html
+function matrixmath.matrix_to_quat(m)
+    q = {
+        ( m[1] + m[6] + m[11] + 1) * .25,
+        ( m[1] - m[6] - m[11] + 1) * .25,
+        (-m[1] + m[6] - m[11] + 1) * .25,
+        (-m[1] - m[6] + m[11] + 1) * .25,
+    }
+    if q[1] < 0 then q[1] = 0 end
+    if q[2] < 0 then q[2] = 0 end
+    if q[3] < 0 then q[3] = 0 end
+    if q[4] < 0 then q[4] = 0 end
+
+    for i=1,4 do
+        q[i] = math.sqrt(q[i])
+    end
+    local SIGN = function(x) if x >= 0 then return 1 else return -1 end end
+    if q[1] >= q[2] and q[1] >= q[3] and q[1] >= q[4] then
+        q[2] = q[2] * SIGN(m[10]-m[7])
+        q[3] = q[3] * SIGN(m[3]-m[9])
+        q[4] = q[4] * SIGN(m[5]-m[2])
+    elseif q[2] >= q[1] and q[2] >= q[3] and q[2] >= q[4] then
+        q[1] = q[1] * SIGN(m[10]-m[7])
+        q[3] = q[3] * SIGN(m[5]-m[2])
+        q[4] = q[4] * SIGN(m[3]-m[9])
+    elseif q[3] >= q[1] and q[3] >= q[2] and q[3] >= q[4] then
+        q[1] = q[1] * SIGN(m[3]-m[9])
+        q[2] = q[2] * SIGN(m[5]-m[2])
+        q[4] = q[4] * SIGN(m[10]-m[7])
+    elseif q[4] >= q[1] and q[4] >= q[2] and q[4] >= q[3] then
+        q[1] = q[1] * SIGN(m[5]-m[2])
+        q[2] = q[2] * SIGN(m[9]-m[3])
+        q[3] = q[3] * SIGN(m[10]-m[7])
+    else
+        print("matrix_to_quat: coding error")
+    end
+    local NORM = function(a,b,c,d) return math.sqrt(a*a+b*b+c*c+d*d) end
+    local r = NORM(q[1], q[2], q[3], q[4])
+    for i=1,4 do
+        q[i] = q[i] / r
+    end
+    return q
+end
+
 function matrixmath.quat_to_matrix(q)
     m = {}
     matrixmath.make_identity_matrix(m)
@@ -291,6 +335,59 @@ function matrixmath.quat_to_matrix(q)
     m[11] = 1 - 2 * ( xx + yy );
 
     return m
+end
+
+-- https://github.com/grrrwaaa/gct753/blob/master/modules/quat.lua
+function matrixmath.matrix_to_quat(m)
+    local ux = {m[1], m[5], m[9]}
+    local uy = {m[2], m[6], m[10]}
+    local uz = {m[3], m[7], m[11]}
+
+    local uxy, uxz = ux[2], ux[3]
+    local uyx, uyz = uy[1], uy[3]
+    local uzx, uzy = uz[1], uz[2]
+    local trace = ux[1] + uy[2] + uz[3]
+    
+    if trace > 0 then
+        local w = math.sqrt(1. + trace)*0.5
+        local div = 1/(4*w)
+        return {
+            (uyz - uzy) * div,
+            (uzx - uxz) * div,
+            (uxy - uyx) * div,
+            w}
+
+    elseif (ux[1] > uy[2] and ux[1] > uz[3]) then
+        -- ux.x is greatest
+        local x = math.sqrt(1. + ux[1]-uy[2]-uz[3])*0.5
+        local div = 1/(4*x)
+        return {
+            x,
+            (uxy + uyx) * div,
+            (uxz + uzx) * div,
+            (uyz - uzy) * div
+        }
+    elseif (uy[2] > ux[1] and uy[2] > uz[3]) then
+        -- uyx is greatest
+        local y = math.sqrt(1. + uy[2]-ux[1]-uz[3])*0.5
+        local div = 1/(4*y)
+        return {
+            (uxy + uyx) * div,
+            y,
+            (uyz + uzy) * div,
+            (uzx - uxz) * div
+        }
+    else 
+        -- uzx is greatest
+        local z = math.sqrt(1. + uz[3]-ux[1]-uy[2])*0.5
+        local div = 1/(4*z)
+        return {
+            (uxz + uzx) * div,
+            (uyz + uzy) * div,
+            z,
+            (uxy - uyx) * div
+        }
+    end
 end
 
 function matrixmath.quat_concat(a, b)
