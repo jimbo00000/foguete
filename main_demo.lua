@@ -114,8 +114,6 @@ function initGL()
 end
 
 function display()
-    if rk then animParams.tparam = rk.get_value("tparam", current_row) or 0 end
-
     gfx.display()
 end
 
@@ -132,10 +130,11 @@ function get_current_param_value_by_name(pname)
 end
 
 function timestep(absTime, dt)
+    gfx.sync_params(get_current_param_value_by_name)
+
     if cb_isplaying() then
         row_time = row_time + dt
         current_row = row_rate * row_time
-        gfx.sync_params(get_current_param_value_by_name)
         gfx.timestep(absTime, dt)
     else
         if socket then socket.sleep(0.001) end
