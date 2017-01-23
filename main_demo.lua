@@ -261,19 +261,14 @@ function main()
         g_ft:onFrame()
         display()
 
-        local clock = os.clock
-        if socket then
-            clock = socket.gettime
-        end
-        function sleep(n)  -- seconds
-          local t0 = clock()
-          while clock() - t0 <= n do end
-        end
-        sleep(1/60)
-
         local now = bass_get_time()
         timestep(now, now - g_lastFrameTime)
         g_lastFrameTime = now
+
+        -- TODO: figure out why vsync isn't working
+        local targetfps = 80
+        if socket then socket.sleep(1/targetfps) end
+
 
         if not SYNC_PLAYER then
             -- Quit at the end of the song
