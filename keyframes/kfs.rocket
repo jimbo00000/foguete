@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rootElement>
 <tracks rows="10000" startRow="0" endRow="10000" rowsPerBeat="8"
-beatsPerMin="125">
+beatsPerMin="150">
 	<track name="posx" folded="0" muteKeyCount="0" color="ffb27474">
 		<key row="0" value="0.000000" interpolation="1" />
 		<key row="8" value="1.000000" interpolation="1" />
