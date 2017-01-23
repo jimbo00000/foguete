@@ -289,12 +289,6 @@ function main()
         glfw.glfw.SwapBuffers(window)
 
         bass.BASS_Update(0) -- decrease the chance of missing vsync
-
-        gcc = gcc + 1
-        if gcc > 10 then
-            gcc = 0
-            collectgarbage()
-        end
     end
 
     bass.BASS_StreamFree(stream)
