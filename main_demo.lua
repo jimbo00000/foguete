@@ -63,13 +63,7 @@ function bass_get_time()
     if stream then
         local pos = bass.BASS_ChannelGetPosition(stream, bass.BASS_POS_BYTE)
         local time = bass.BASS_ChannelBytes2Seconds(stream, pos)
-        local startTime = .0 -- Start of first beat according to audacity
-        local fudge = 0 --.12 -- Line hits up to beat visually
-
-        -- TODO: why is there half a beat discrepancy when running without sync?
-        --fudge = fudge - 0.48385126/2
-
-        return time - startTime - fudge
+        return time
     end
 end
 
@@ -235,7 +229,6 @@ function main()
     stream = bass.BASS_StreamCreateFile(false, "data/SimpleBeat.wav", 0, 0, bass.BASS_STREAM_PRESCAN)
 
     gfx.setbpm(bpm)
-    --gfx.reset_camera_to_initial()
 
     bass.BASS_Start()
     bass.BASS_ChannelPlay(stream, false)
