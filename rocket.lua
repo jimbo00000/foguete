@@ -57,7 +57,7 @@ local function serialize (o)
 end
 
 local function save_tracks()
-	local filename = "keyframes/tracks.lua"
+	local filename = "data/tracks.lua"
 	print("Saving tracks to "..filename)
 	local fh = io.open(filename, "w+")
 	if fh then

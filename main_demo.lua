@@ -172,7 +172,7 @@ function main()
         end
     else
         --print("Load tracks from file")
-        local tracks_module = 'keyframes.tracks'
+        local tracks_module = 'data.tracks'
         local status, module = pcall(require, tracks_module)
         if not status then
             print('Tracks file ['..tracks_module ..'.lua] not found.')
