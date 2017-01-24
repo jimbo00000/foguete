@@ -162,7 +162,7 @@ local function receive_float32(o)
 end
 
 -- Send byte values in network order over a socket
-function rocket.send_int32(o, num32)
+function send_int32(o, num32)
 	-- http://giderosmobile.com/forum/discussion/1083/any-demo-code-for-lua-socket
 	-- Integer 32 bit serialization (big-endian)
 	local function serializeInt32(value)
@@ -197,7 +197,7 @@ end
 
 function rocket.send_track_name(o, trackname)
 	o:send(string.char(rocket.GET_TRACK))
-	rocket.send_int32(o, string.len(trackname))
+	send_int32(o, string.len(trackname))
 	o:send(trackname)
 end
 
@@ -258,7 +258,7 @@ function rocket.sync_update(obj, row, cbs)
 		if row ~= rocket.last_sent_row then
 			rocket.last_sent_row = row
 			obj:send(string.char(rocket.SET_ROW))
-			rocket.send_int32(obj, row)
+			send_int32(obj, row)
 		end
 	end
 
