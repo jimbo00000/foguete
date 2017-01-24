@@ -161,19 +161,18 @@ local function receive_float32(o)
 	return ffi.cast("const float*", b)[0]
 end
 
--- http://giderosmobile.com/forum/discussion/1083/any-demo-code-for-lua-socket
--- Integer 32 bit serialization (big-endian)
-function serializeInt32(value)
-	local a = bit.band(bit.rshift(value, 24), 255)
-	local b = bit.band(bit.rshift(value, 16), 255)
-	local c = bit.band(bit.rshift(value, 8), 255)
-	local d = bit.band(value, 255)
-
-	return string.char(a, b, c, d)
-end
-
 -- Send byte values in network order over a socket
 function rocket.send_int32(o, num32)
+	-- http://giderosmobile.com/forum/discussion/1083/any-demo-code-for-lua-socket
+	-- Integer 32 bit serialization (big-endian)
+	local function serializeInt32(value)
+		local a = bit.band(bit.rshift(value, 24), 255)
+		local b = bit.band(bit.rshift(value, 16), 255)
+		local c = bit.band(bit.rshift(value, 8), 255)
+		local d = bit.band(value, 255)
+		return string.char(a, b, c, d)
+	end
+
 	local ser = serializeInt32(num32)
 	local ret = o:send(ser)
 	if ret and ret ~= 4 then
