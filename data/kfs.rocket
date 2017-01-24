@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rootElement>
 <tracks rows="10000" startRow="0" endRow="10000" rowsPerBeat="8"
-beatsPerMin="150">
+beatsPerMin="150" musicFilename="C">
 	<track name="posx" folded="0" muteKeyCount="0" color="ffb27474">
 		<key row="0" value="0.000000" interpolation="1" />
 		<key row="8" value="1.000000" interpolation="1" />
-		<key row="16" value="0.000000" interpolation="0" />
+		<key row="16" value="0.000000" interpolation="1" />
+		<key row="32" value="0.000000" interpolation="1" />
+		<key row="40" value="1.000000" interpolation="1" />
+		<key row="48" value="0.000000" interpolation="1" />
+		<key row="56" value="-1.000000" interpolation="1" />
+		<key row="64" value="0.000000" interpolation="0" />
 	</track>
 	<track name="posy" folded="0" muteKeyCount="0" color="ffb28050">
 		<key row="16" value="0.000000" interpolation="1" />
 		<key row="24" value="1.000000" interpolation="1" />
 		<key row="32" value="0.000000" interpolation="0" />
+		<key row="40" value="0.000000" interpolation="1" />
+		<key row="48" value="1.000000" interpolation="1" />
+		<key row="56" value="0.000000" interpolation="1" />
+		<key row="64" value="0.000000" interpolation="0" />
 	</track>
 </tracks>
 	</rootElement>
