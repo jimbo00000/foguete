@@ -140,17 +140,6 @@ function rocket.get_value(name, row)
 	end
 end
 
--- Debug check
-function rocket.dump_track_table()
-	print(#rocket.sync_tracks)
-	for kkk, vvv in pairs(rocket.sync_tracks) do
-		print("  track "..kkk..": "..vvv.name)
-		for k, v in pairs(vvv.keys) do
-			print("    "..v.row.."  "..v.val.." "..v.interp)
-		end
-	end
-end
-
 -- Coalesce 4 bytes read from a socket into one 32 bit int
 local function receive_int32(o)
 	local b = o:receive(4)
@@ -207,31 +196,10 @@ function rocket.connect_demo()
 	return 0
 end
 
-function rocket.connect_editor()
-	local obj = socket.tcp()
-	c = obj:bind(rocket.SYNC_HOST, rocket.SYNC_DEFAULT_PORT)
-	obj:listen(32)
-	-- If other instances are running, this will fail
-	local client = obj:accept()
-	client:settimeout(0)
-
-	-- Greet the Demo
-	local resp = client:receive(string.len(rocket.CLIENT_GREET))
-	print("Resp: "..resp)
-	client:send(rocket.SERVER_GREET)
-	return client
-end
-
 function rocket.send_track_name(o, trackname)
 	o:send(string.char(rocket.GET_TRACK))
 	rocket.send_int32(o, string.len(trackname))
 	o:send(trackname)
-end
-
-function rocket.send_toggle_pause(o, trackname)
-	print("___________rocket.send_toggle_pause")
-	--o:send(string.char(rocket.PAUSE))
-	--o:send(string.char(rocket.paused))
 end
 
 function rocket.receive_and_process_command_editor(client)
