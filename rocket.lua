@@ -149,12 +149,6 @@ local function receive_int32(o)
 end
 
 local function receive_float32(o)
-	local function float_isnan ( buff )
-		local as_int = cast ( int32_p , buff )[0]
-		return band ( as_int , 0x7F800000 ) == 0x7F800000
-			and band ( as_int , 0x7FFFFF ) ~= 0
-	end
-
 	local b = o:receive(4)
 	if not b then return 0 end
 	b = string.reverse(b) -- ntohs
