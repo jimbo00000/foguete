@@ -246,8 +246,7 @@ function rocket.sync_update(obj, row, cbs)
 	local retval = 0
 	repeat
 		obj:settimeout(0)
-		r,w, e = socket.select({obj}, {obj}, 0)
-		--print(table.getn(r).." "..table.getn(w))
+		r,w,e = socket.select({obj}, {obj}, 0)
 		if e then
 			print("Select error: "..e)
 			return 3
