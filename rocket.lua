@@ -201,25 +201,6 @@ function rocket.send_track_name(o, trackname)
 	o:send(trackname)
 end
 
-function rocket.receive_and_process_command_editor(client)
-	local cmd = client:receive(1)
-	if cmd then
-		local bcmd = string.byte(cmd)
-		if bcmd == rocket.SET_KEY then
-			print("Set key: ")
-		elseif bcmd == rocket.GET_TRACK then
-			local namelen = receive_int32(client)
-			local trackname = client:receive(namelen)
-			print("Get track: "..namelen.." "..trackname)
-		elseif bcmd == rocket.SET_ROW then
-			local rownum = receive_int32(client)
-			print("Set row: "..rownum)
-		else
-			print("Unknown cmd: "..cmd.." ("..bcmd..")")
-		end
-	end
-end
-
 function rocket.receive_and_process_command_demo(obj, row, cbs)
 	obj:settimeout(0)
 	local cmd = obj:receive(1)
@@ -246,7 +227,6 @@ function rocket.receive_and_process_command_demo(obj, row, cbs)
 		if track and row then
 			local tidx = track + 1
 			rocket.sync_tracks[tidx].keys[row] = nil
-			rocket.dump_track_table()
 		end
 	elseif bcmd == rocket.SET_ROW then
 		local row = receive_int32(obj)
