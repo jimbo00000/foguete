@@ -148,6 +148,16 @@ function rocket.get_value(name, row)
 	end
 end
 
+-- Add key into tracks table
+function rocket.add_key_to_table(t, r, v, f)
+	local tidx = t + 1
+	kk = {row = r, val = v, interp = string.byte(f)}
+	-- Insert into sparse array
+	if rocket.sync_tracks[tidx] then
+		rocket.sync_tracks[tidx].keys[r] = kk
+	end
+end
+
 -- Coalesce 4 bytes read from a socket into one 32 bit int
 local function receive_int32(o)
 	local b = o:receive(4)
@@ -215,20 +225,18 @@ function rocket.receive_and_process_command_demo(obj, row, cbs)
 		local v = receive_float32(obj)
 		local f = obj:receive(1)
 		if t and r and v and f then
-			-- Add key into tracks table
-			local tidx = t + 1
-			kk = {row = r, val = v, interp = string.byte(f)}
-			-- Insert into sparse array
-			if rocket.sync_tracks[tidx] then
-				rocket.sync_tracks[tidx].keys[r] = kk
-			end
+			rocket.add_key_to_table(t, r, v, f)
 		end
 	elseif bcmd == rocket.DELETE_KEY then
 		local track = receive_int32(obj)
 		local row = receive_int32(obj)
 		if track and row then
+
+
 			local tidx = track + 1
 			rocket.sync_tracks[tidx].keys[row] = nil
+
+
 		end
 	elseif bcmd == rocket.SET_ROW then
 		local row = receive_int32(obj)
