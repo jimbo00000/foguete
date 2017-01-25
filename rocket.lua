@@ -89,52 +89,60 @@ function key_interp(k0, k1, row)
     return k0.val + (k1.val - k0.val) * t
 end
 
-function rocket.get_value(name, row)
-    -- TODO: using an array and table.insert, consecutive keys can be neighbors
+function rocket.get_track(name)
 	-- TODO: index by name for no search
-	for k, v in pairs(rocket.sync_tracks) do
+	for _,v in pairs(rocket.sync_tracks) do
 		if v.name == name then
-			-- TODO: find current key and interpolate
-			local k = v.keys
-			if k then
-				local kr = k[row]
-				if kr then
-					return kr.val
-				else
-					-- Find the previous and next keys in the "list"
-					--print(name, row)
+			return v
+		end
+	end
+	-- TODO: add track if it doesn't exist
+	return nil
+end
 
-					-- Create a list of row keys
-					local keyset={}
-					local n=0
-					for kk,vv in pairs(k) do
-						n=n+1
-						keyset[n]=kk
-					end
-					table.sort(keyset)
-					local prv = nil
-					local nxt = nil
-					for kk,vv in pairs(keyset) do
-						--print(kk,vv)
-						if vv < row then
-							prv = vv
-						elseif vv > row then
-							nxt = vv
-							if not prv then
-								--print("--nxt: "..nxt)
-								return k[nxt].val
-							else
-								--print("--Interp: "..prv.."->"..nxt)
-								return key_interp(k[prv], k[nxt], row)
-							end
-						end
-					end
-					-- No next key found; use last
-					if prv and not nxt then
-						--print("--prv: "..prv)
-						return k[prv].val
+function rocket.get_value(name, row)
+	local track = rocket.get_track(name)
+
+    -- TODO: using an array and table.insert, consecutive keys can be neighbors
+	-- TODO: find current key and interpolate
+	local k = track.keys
+	if k then
+		local kr = k[row]
+		if kr then
+			return kr.val
+		else
+			-- Find the previous and next keys in the "list"
+			--print(name, row)
+
+			-- Create a list of row keys
+			local keyset={}
+			local n=0
+			for kk,vv in pairs(k) do
+				n=n+1
+				keyset[n]=kk
+			end
+			table.sort(keyset)
+			local prv = nil
+			local nxt = nil
+			for kk,vv in pairs(keyset) do
+				--print(kk,vv)
+				if vv < row then
+					prv = vv
+				elseif vv > row then
+					nxt = vv
+					if not prv then
+						--print("--nxt: "..nxt)
+						return k[nxt].val
+					else
+						--print("--Interp: "..prv.."->"..nxt)
+						return key_interp(k[prv], k[nxt], row)
 					end
 				end
+			end
+			-- No next key found; use last
+			if prv and not nxt then
+				--print("--prv: "..prv)
+				return k[prv].val
 			end
 		end
 	end
