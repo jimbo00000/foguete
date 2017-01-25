@@ -69,12 +69,6 @@ local function save_tracks()
 	end
 end
 
-function rocket.create_track(name)
-	--rocket.sync_tracks[name] = {}
-	track = {name = name, keys = {}}
-	table.insert(rocket.sync_tracks, track)
-end
-
 function key_interp(k0, k1, row)
 	if not k1 then return k0.val end
 
@@ -89,6 +83,13 @@ function key_interp(k0, k1, row)
         t = math.pow(t, 2)
     end
     return k0.val + (k1.val - k0.val) * t
+end
+
+-- TODO: fold this into get_track
+function rocket.create_track(name)
+	--rocket.sync_tracks[name] = {}
+	track = {name = name, keys = {}}
+	table.insert(rocket.sync_tracks, track)
 end
 
 function rocket.get_track(name)
