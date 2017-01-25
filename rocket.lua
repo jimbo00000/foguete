@@ -87,7 +87,6 @@ end
 
 -- TODO: fold this into get_track
 function rocket.create_track(name)
-	--rocket.sync_tracks[name] = {}
 	track = {name = name, keys = {}}
 	table.insert(rocket.sync_tracks, track)
 end
@@ -108,46 +107,45 @@ function rocket.get_value(name, row)
 	if not track then return 0 end
 
     -- TODO: using an array and table.insert, consecutive keys can be neighbors
-	-- TODO: find current key and interpolate
 	local k = track.keys
 	if not k then return 0 end
 
 	local kr = k[row]
-	if kr then
-		return kr.val
-	else
-		-- Find the previous and next keys in the "list"
+	if kr then return kr.val end
 
-		-- Create a list of sorted row keys
-		local keyset={}
-		local n=0
-		for kk,vv in pairs(k) do
-			n=n+1
-			keyset[n]=kk
-		end
-		table.sort(keyset)
-		-- Now we can traverse in order
-		local prv = nil
-		local nxt = nil
-		for kk,vv in pairs(keyset) do
-			if vv < row then
-				prv = vv
-			elseif vv > row then
-				nxt = vv
-				break
-			end
-		end
+	-- Find the previous and next keys in the "list"
 
-		if not prv then
-			if k[kxt] then return k[nxt].val end
-		else
-			return key_interp(k[prv], k[nxt], row)
-		end
-		-- No next key found; use last
-		if prv and not nxt then
-			return k[prv].val
+	-- Create a list of sorted row keys
+	local keyset={}
+	local n=0
+	for kk,vv in pairs(k) do
+		n=n+1
+		keyset[n]=kk
+	end
+	table.sort(keyset)
+	-- Now we can traverse in order
+	local prv = nil
+	local nxt = nil
+	for kk,vv in pairs(keyset) do
+		if vv < row then
+			prv = vv
+		elseif vv > row then
+			nxt = vv
+			break
 		end
 	end
+
+	-- Get value from the two neighboring keyframes
+	if not prv then
+		if k[kxt] then return k[nxt].val end
+	else
+		return key_interp(k[prv], k[nxt], row)
+	end
+	-- No next key found; use last
+	if prv and not nxt then
+		return k[prv].val
+	end
+
 	return 0
 end
 
