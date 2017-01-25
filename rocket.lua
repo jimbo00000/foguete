@@ -219,7 +219,7 @@ function rocket.send_track_name(o, trackname)
 	o:send(trackname)
 end
 
-function rocket.receive_and_process_command_demo(obj, row, cbs)
+function rocket.receive_and_process_command_demo(obj, row, callbacks)
 	obj:settimeout(0)
 	local cmd = obj:receive(1)
 	if not cmd then return 0 end
@@ -241,10 +241,10 @@ function rocket.receive_and_process_command_demo(obj, row, cbs)
 		end
 	elseif bcmd == rocket.SET_ROW then
 		local row = receive_int32(obj)
-		if row then cbs[2](row) end
+		if row then callbacks.setrow(row) end
 	elseif bcmd == rocket.PAUSE then
 		local p = obj:receive(1)
-		if p then cbs[1](string.byte(p)) end
+		if p then callbacks.pause(string.byte(p)) end
 	elseif bcmd == rocket.SAVE_TRACKS then
 		save_tracks()
 	else
@@ -253,7 +253,7 @@ function rocket.receive_and_process_command_demo(obj, row, cbs)
 	end
 end
 
-function rocket.sync_update(obj, row, cbs)
+function rocket.sync_update(obj, row, callbacks)
 	local retval = 0
 	repeat
 		obj:settimeout(0)
@@ -262,10 +262,10 @@ function rocket.sync_update(obj, row, cbs)
 			print("Select error: "..e)
 			return 3
 		end
-		retval = rocket.receive_and_process_command_demo(obj, row, cbs)
+		retval = rocket.receive_and_process_command_demo(obj, row, callbacks)
 	until table.getn(r) == 0
 
-	if cbs[3]() == true then
+	if callbacks.isplaying() == true then
 		if row ~= rocket.last_sent_row then
 			rocket.last_sent_row = row
 			obj:send(string.char(rocket.SET_ROW))

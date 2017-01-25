@@ -97,9 +97,9 @@ function cb_isplaying()
 end
 
 local cbs = {
-    cb_pause,
-    cb_setrow,
-    cb_isplaying
+    ["pause"] = cb_pause,
+    ["setrow"] = cb_setrow,
+    ["isplaying"] = cb_isplaying,
 }
 
 function onkey(window,k,code,action,mods)
