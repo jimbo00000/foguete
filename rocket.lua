@@ -158,6 +158,11 @@ function rocket.add_key_to_table(t, r, v, f)
 	end
 end
 
+function rocket.delete_key_from_table(track, row)
+	local tidx = track + 1
+	rocket.sync_tracks[tidx].keys[row] = nil
+end
+
 -- Coalesce 4 bytes read from a socket into one 32 bit int
 local function receive_int32(o)
 	local b = o:receive(4)
@@ -231,12 +236,7 @@ function rocket.receive_and_process_command_demo(obj, row, cbs)
 		local track = receive_int32(obj)
 		local row = receive_int32(obj)
 		if track and row then
-
-
-			local tidx = track + 1
-			rocket.sync_tracks[tidx].keys[row] = nil
-
-
+			rocket.delete_key_from_table(track, row)
 		end
 	elseif bcmd == rocket.SET_ROW then
 		local row = receive_int32(obj)
