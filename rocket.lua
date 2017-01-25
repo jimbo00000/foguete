@@ -76,6 +76,8 @@ function rocket.create_track(name)
 end
 
 function key_interp(k0, k1, row)
+	if not k1 then return k0.val end
+
     local step = k0.interp
     if step == rocket.KEY_STEP then
         return k0.val
@@ -112,7 +114,6 @@ function rocket.get_value(name, row)
 			return kr.val
 		else
 			-- Find the previous and next keys in the "list"
-			--print(name, row)
 
 			-- Create a list of row keys
 			local keyset={}
@@ -125,23 +126,21 @@ function rocket.get_value(name, row)
 			local prv = nil
 			local nxt = nil
 			for kk,vv in pairs(keyset) do
-				--print(kk,vv)
 				if vv < row then
 					prv = vv
 				elseif vv > row then
 					nxt = vv
-					if not prv then
-						--print("--nxt: "..nxt)
-						return k[nxt].val
-					else
-						--print("--Interp: "..prv.."->"..nxt)
-						return key_interp(k[prv], k[nxt], row)
-					end
+					break
 				end
+			end
+
+			if not prv then
+				return k[nxt].val
+			else
+				return key_interp(k[prv], k[nxt], row)
 			end
 			-- No next key found; use last
 			if prv and not nxt then
-				--print("--prv: "..prv)
 				return k[prv].val
 			end
 		end
