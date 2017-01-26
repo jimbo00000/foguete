@@ -58,7 +58,11 @@ end
 
 local function save_tracks()
 	local filename = "data/tracks.lua"
-	print("Saving tracks to "..filename)
+	print("Saving tracks to "..filename..":")
+	for _,v in pairs(rocket.sync_tracks) do
+		print("",v.name)
+	end
+
 	local fh = io.open(filename, "w+")
 	if fh then
 		io.output(fh)
