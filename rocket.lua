@@ -198,21 +198,24 @@ function send_int32(o, num32)
 	end
 end
 
--- Returns 0 for success
--- Todo: return non-zero for failure
+-- Returns 0 for success, non-zero for failure
 function rocket.connect_demo()
 	rocket.obj = socket.tcp()
 	rocket.obj:settimeout(1)
 	local status, error = rocket.obj:connect(rocket.SYNC_HOST, rocket.SYNC_DEFAULT_PORT)
 	if status ~= 1 then
 		print("Connect error: ", error)
+		return 1
 	end
 
-	-- Greet the Editor...
+	-- Greet the Editor and receive response
 	rocket.obj:send(rocket.CLIENT_GREET)
 	local resp = rocket.obj:receive(string.len(rocket.SERVER_GREET))
-	if resp then print("Response: "..resp) end
-	rocket.obj:settimeout(0)
+	if resp ~= rocket.SERVER_GREET then
+		print("Incorrect response: ", resp)
+		return 2
+	end
+
 	return 0
 end
 
