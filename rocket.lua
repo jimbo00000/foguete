@@ -243,6 +243,20 @@ function rocket.handle_del_key_cmd(obj)
 	end
 end
 
+function rocket.handle_set_row_cmd(obj, callbacks)
+	local row = receive_int32(obj)
+	if row then callbacks.setrow(row) end
+end
+
+function rocket.handle_pause_cmd(obj, callbacks)
+	local p = obj:receive(1)
+	if p then callbacks.pause(string.byte(p)) end
+end
+
+function rocket.handle_save_tracks_cmd(obj)
+	save_tracks()
+end
+
 function rocket.receive_and_process_command_demo(obj, row, callbacks)
 	obj:settimeout(0)
 	local cmd = obj:receive(1)
@@ -254,13 +268,11 @@ function rocket.receive_and_process_command_demo(obj, row, callbacks)
 	elseif bcmd == rocket.DELETE_KEY then
 		rocket.handle_del_key_cmd(obj)
 	elseif bcmd == rocket.SET_ROW then
-		local row = receive_int32(obj)
-		if row then callbacks.setrow(row) end
+		rocket.handle_set_row_cmd(obj, callbacks)
 	elseif bcmd == rocket.PAUSE then
-		local p = obj:receive(1)
-		if p then callbacks.pause(string.byte(p)) end
+		rocket.handle_pause_cmd(obj, callbacks)
 	elseif bcmd == rocket.SAVE_TRACKS then
-		save_tracks()
+		rocket.handle_save_tracks_cmd(obj)
 	else
 		print("Unknown cmd: "..cmd.." ("..bcmd..")")
 		return 2
