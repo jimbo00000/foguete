@@ -31,8 +31,6 @@ rocket.KEY_LINEAR = 1
 rocket.KEY_SMOOTH = 2
 rocket.KEY_RAMP = 3
 
-rocket.last_sent_row = 0
-
 rocket.sync_tracks = {}
 
 -- http://www.lua.org/pil/12.1.1.html
@@ -291,11 +289,8 @@ function rocket.sync_update(obj, row, callbacks)
 	until table.getn(r) == 0
 
 	if callbacks.isplaying() == true then
-		if row ~= rocket.last_sent_row then
-			rocket.last_sent_row = row
-			obj:send(string.char(rocket.SET_ROW))
-			send_int32(obj, row)
-		end
+		obj:send(string.char(rocket.SET_ROW))
+		send_int32(obj, row)
 	end
 
 	return retval
