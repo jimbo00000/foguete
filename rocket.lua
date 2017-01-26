@@ -203,7 +203,10 @@ end
 function rocket.connect_demo()
 	rocket.obj = socket.tcp()
 	rocket.obj:settimeout(1)
-	c = rocket.obj:connect(rocket.SYNC_HOST, rocket.SYNC_DEFAULT_PORT)
+	local status, error = rocket.obj:connect(rocket.SYNC_HOST, rocket.SYNC_DEFAULT_PORT)
+	if status ~= 1 then
+		print("Connect error: ", error)
+	end
 
 	-- Greet the Editor...
 	rocket.obj:send(rocket.CLIENT_GREET)
