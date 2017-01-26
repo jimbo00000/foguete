@@ -219,6 +219,24 @@ function rocket.send_track_name(o, trackname)
 	o:send(trackname)
 end
 
+function rocket.handle_set_key_cmd(obj)
+	local t = receive_int32(obj)
+	local r = receive_int32(obj)
+	local v = receive_float32(obj)
+	local f = obj:receive(1)
+	if t and r and v and f then
+		rocket.add_key_to_table(t, r, v, f)
+	end
+end
+
+function rocket.handle_del_key_cmd(obj)
+	local track = receive_int32(obj)
+	local row = receive_int32(obj)
+	if track and row then
+		rocket.delete_key_from_table(track, row)
+	end
+end
+
 function rocket.receive_and_process_command_demo(obj, row, callbacks)
 	obj:settimeout(0)
 	local cmd = obj:receive(1)
@@ -226,19 +244,9 @@ function rocket.receive_and_process_command_demo(obj, row, callbacks)
 
 	local bcmd = string.byte(cmd)
 	if bcmd == rocket.SET_KEY then
-		local t = receive_int32(obj)
-		local r = receive_int32(obj)
-		local v = receive_float32(obj)
-		local f = obj:receive(1)
-		if t and r and v and f then
-			rocket.add_key_to_table(t, r, v, f)
-		end
+		rocket.handle_set_key_cmd(obj)
 	elseif bcmd == rocket.DELETE_KEY then
-		local track = receive_int32(obj)
-		local row = receive_int32(obj)
-		if track and row then
-			rocket.delete_key_from_table(track, row)
-		end
+		rocket.handle_del_key_cmd(obj)
 	elseif bcmd == rocket.SET_ROW then
 		local row = receive_int32(obj)
 		if row then callbacks.setrow(row) end
