@@ -266,21 +266,16 @@ function rocket.receive_and_process_command_demo(obj, row, callbacks)
 	local cmd = obj:receive(1)
 	if not cmd then return 0 end
 
+	local func_table = {
+		[rocket.SET_KEY] = function(x) rocket.handle_set_key_cmd(obj) end,
+		[rocket.DELETE_KEY] = function(x) rocket.handle_del_key_cmd(obj) end,
+		[rocket.SET_ROW] = function(x) rocket.handle_set_row_cmd(obj, callbacks) end,
+		[rocket.PAUSE] = function(x) rocket.handle_pause_cmd(obj, callbacks) end,
+		[rocket.SAVE_TRACKS] = function(x) rocket.handle_save_tracks_cmd(obj) end,
+	}
 	local bcmd = string.byte(cmd)
-	if bcmd == rocket.SET_KEY then
-		rocket.handle_set_key_cmd(obj)
-	elseif bcmd == rocket.DELETE_KEY then
-		rocket.handle_del_key_cmd(obj)
-	elseif bcmd == rocket.SET_ROW then
-		rocket.handle_set_row_cmd(obj, callbacks)
-	elseif bcmd == rocket.PAUSE then
-		rocket.handle_pause_cmd(obj, callbacks)
-	elseif bcmd == rocket.SAVE_TRACKS then
-		rocket.handle_save_tracks_cmd(obj)
-	else
-		print("Unknown cmd: "..cmd.." ("..bcmd..")")
-		return 2
-	end
+	local f = func_table[bcmd]
+	if f then f() end
 end
 
 function rocket.sync_update(obj, row, callbacks)
