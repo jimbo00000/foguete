@@ -161,6 +161,10 @@ function main()
 
     if SYNC_PLAYER then
         local success = rk.connect_demo()
+        if success ~= 0 then
+            print("Failed to connect.")
+            os.exit(0)
+        end
         -- Sort keys before inserting
         alphakeys = {}
         for n in pairs(gfx.sync_callbacks) do table.insert(alphakeys, n) end
