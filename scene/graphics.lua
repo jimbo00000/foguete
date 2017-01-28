@@ -19,6 +19,7 @@ local Scene = nil
 local scenedir = "scene2"
 local scene_names = {
     "vsfstri",
+    "colorcube",
 }
 local scenes = {}
 
@@ -87,6 +88,10 @@ end
 -- the rocket module. Values may be updated by messages from the editor.
 -- Keys must match track names sent to editor.
 graphics.sync_callbacks = {
+    ["Scene"] = function(v)
+        -- Switch scenes with an index
+        if scenes[v] then Scene = scenes[v] end
+    end,
     ["posx"] = function(v)
         if Scene.posx then Scene.posx = v end
     end,
