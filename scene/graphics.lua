@@ -87,7 +87,7 @@ function graphics.setbpm(bpm)
 end
 
 -- A table of handlers for different track name-value pairs coming from
--- either the Rocket editor or a saved list of keyframes.
+-- the rocket module. Values may be updated by messages from the editor.
 graphics.sync_callbacks = {
     ["posx"] = function(v)
         if Scene.posx then Scene.posx = v end
@@ -95,12 +95,17 @@ graphics.sync_callbacks = {
     ["posy"] = function(v)
         if Scene.posy then Scene.posy = v end
     end,
+    ["rot"] = function(v)
+        if Scene.rot then Scene.rot = v end
+    end,
     -- Add new keyframe names here
 }
 
-function graphics.sync_params(get_cur_param)
-    -- The get_cur_param function is passed in from the calling main func
-    local f = get_cur_param
+function graphics.sync_params(get_param_value_at_current_time)
+    -- The get_param_value_at_current_time function
+    -- calls into rocket's track list of keyframes
+    -- with the current time(according to main) as a parameter.
+    local f = get_param_value_at_current_time
     if not f then return end
 
     for k,_ in pairs(graphics.sync_callbacks) do

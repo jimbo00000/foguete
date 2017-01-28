@@ -26,8 +26,11 @@ function vsfstri:init()
     self.vbos = {}
     self.vao = 0
     self.prog = 0
+
+    -- These fields may be changed by rocket
     self.posx = 0
     self.posy = 0
+    self.rot = 0
 end
 
 --local openGL = require("opengl")
@@ -134,6 +137,7 @@ function vsfstri:render_for_one_eye(view, proj)
     local m = {}
     for i=1,16 do m[i] = view[i] end
     mm.glh_translate(m, self.posx, self.posy, 0)
+    mm.glh_rotate(m, self.rot, 0,0,1)
 
     gl.glUseProgram(self.prog)
     local umv_loc = gl.glGetUniformLocation(self.prog, "mvmtx")
