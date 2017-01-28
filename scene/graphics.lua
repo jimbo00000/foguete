@@ -92,13 +92,13 @@ graphics.sync_callbacks = {
         -- Switch scenes with an index
         if scenes[v] then Scene = scenes[v] end
     end,
-    ["posx"] = function(v)
+    ["tri:posx"] = function(v)
         if Scene.posx then Scene.posx = v end
     end,
-    ["posy"] = function(v)
+    ["tri:posy"] = function(v)
         if Scene.posy then Scene.posy = v end
     end,
-    ["rot"] = function(v)
+    ["tri:rot"] = function(v)
         if Scene.rot then Scene.rot = v end
     end,
     -- Add new keyframe names here
