@@ -88,6 +88,7 @@ end
 
 -- A table of handlers for different track name-value pairs coming from
 -- the rocket module. Values may be updated by messages from the editor.
+-- Keys must match track names sent to editor.
 graphics.sync_callbacks = {
     ["posx"] = function(v)
         if Scene.posx then Scene.posx = v end
@@ -108,9 +109,9 @@ function graphics.sync_params(get_param_value_at_current_time)
     local f = get_param_value_at_current_time
     if not f then return end
 
-    for k,_ in pairs(graphics.sync_callbacks) do
-        local g = graphics.sync_callbacks[k]
-        local val = f(k)
+    for trackname,_ in pairs(graphics.sync_callbacks) do
+        local val = f(trackname)
+        local g = graphics.sync_callbacks[trackname]
         if g and val then g(val) end
     end
 end
