@@ -244,7 +244,6 @@ function main()
     --end
 
     g_lastFrameTime = 0
-    local gcc = 0 -- collect garbage every n cycles
     while glfw.glfw.WindowShouldClose(window) == 0 do
         if SYNC_PLAYER then
             local uret = rk.sync_update(rocket.obj, current_row, cbs)
