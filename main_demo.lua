@@ -152,7 +152,7 @@ function main()
     local b = ffi.new("int[1]")
     local c = ffi.new("int[1]")
     glfw.glfw.GetVersion(a,b,c)
-    print(a[0],b[0],c[0])
+    print("glfw version "..a[0]..'.'..b[0]..'.'..c[0])
 
 
     if arg[1] and arg[1] == "sync" then
