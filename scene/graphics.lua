@@ -15,29 +15,26 @@ graphics.objrot = {0,0}
 graphics.camerapan = {0,0,0}
 graphics.chassis = {0,0,1}
 
+local Scene = nil
 local scenedir = "scene2"
-function graphics.switch_to_scene(name)
-    local fullname = scenedir.."."..name
-    if Scene and Scene.exitGL then
-        Scene:exitGL()
-    end
-    -- Do we need to unload the module?
-    package.loaded[fullname] = nil
-    Scene = nil
+local scene_names = {
+    "vsfstri",
+}
+local scenes = {}
 
-    if not Scene then
-        local SceneLibrary = require(fullname)
-        Scene = SceneLibrary.new()
-        if Scene then
-            if Scene.setDataDirectory then Scene:setDataDirectory("data") end
-            Scene:initGL()
-        end
-    end
-end
-
-
+-- Load  and call initGL on all scenes at startup
 function graphics.initGL()
-    graphics.switch_to_scene("vsfstri")
+    for _,name in pairs(scene_names) do
+        local fullname = scenedir..'.'..name
+        local SceneLibrary = require(fullname)
+        s = SceneLibrary.new()
+        if s then
+            if s.setDataDirectory then s:setDataDirectory("data") end
+            s:initGL()
+        end
+        table.insert(scenes, s)
+    end
+    Scene = scenes[1]
 end
 
 function graphics.display()
