@@ -167,7 +167,7 @@ function main()
         table.sort(alphakeys)
         for _,k in ipairs(alphakeys) do
             print("Create track: ",k)
-            rk.create_track(k)
+            rk.get_track(k)
             rk.send_track_name(rk.obj, k)
         end
     else

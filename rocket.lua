@@ -87,12 +87,6 @@ function key_interp(k0, k1, row)
     return k0.val + (k1.val - k0.val) * t
 end
 
--- TODO: fold this into get_track
-function rocket.create_track(name)
-	track = {name = name, keys = {}}
-	table.insert(rocket.sync_tracks, track)
-end
-
 function rocket.get_track(name)
 	-- TODO: index by name for no search
 	for _,v in pairs(rocket.sync_tracks) do
@@ -100,8 +94,10 @@ function rocket.get_track(name)
 			return v
 		end
 	end
-	-- TODO: add track if it doesn't exist
-	return nil
+	-- Insert new track if not found
+	track = {name = name, keys = {}}
+	table.insert(rocket.sync_tracks, track)
+	return track
 end
 
 function rocket.get_value(name, row)
