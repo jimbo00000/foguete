@@ -16,7 +16,7 @@ graphics.camerapan = {0,0,0}
 graphics.chassis = {0,0,1}
 
 local Scene = nil
-local scenedir = "scene2"
+local scenedir = "scene"
 local scene_names = {
     "vsfstri",
     "colorcube",
