@@ -13,6 +13,8 @@ elseif (ffi.os == "Linux") then
 end
 local fpstimer = require("util.fpstimer")
 
+package.path = package.path .. ';lib/?.lua'
+
 -- http://stackoverflow.com/questions/17877224/how-to-prevent-a-lua-script-from-failing-when-a-require-fails-to-find-the-scri
 local function prequire(m)
   local ok, err = pcall(require, m)
