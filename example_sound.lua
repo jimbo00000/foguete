@@ -56,7 +56,7 @@ local function row_to_ms_round(row, rps)
 end
 
 local function ms_to_row_f(time_ms, rps) 
-	local row = rps * time_ms * 1.0/1000.0
+	local row = rps * time_ms/1000
 	return row
 end
 
@@ -66,17 +66,15 @@ local function ms_to_row_round(time_ms, rps)
 end
 
 function bass_get_time()
-    if stream then
-        local pos = bass.BASS_ChannelGetPosition(stream, bass.BASS_POS_BYTE)
-        local time_s = bass.BASS_ChannelBytes2Seconds(stream, pos)
-        return time_s * 1000
-    end
+    if not stream then return 0 end
+    local pos = bass.BASS_ChannelGetPosition(stream, bass.BASS_POS_BYTE)
+    local time_s = bass.BASS_ChannelBytes2Seconds(stream, pos)
+    return time_s * 1000
 end
 
 function bass_get_row()
-    if stream then
-        return bass_get_time() * rps
-    end
+    if not stream then return 0 end
+    return bass_get_time() * rps
 end
 
 function cb_pause(flag)
@@ -95,7 +93,7 @@ function cb_setrow(row)
     local pos = bass.BASS_ChannelSeconds2Bytes(stream, curtime_ms/1000)
     local ret = bass.BASS_ChannelSetPosition(stream, pos, bass.BASS_POS_BYTE)
     if ret == 0 then
-        print("err ",bass.BASS_ErrorGetCode())
+        print("BASS_ChannelSetPosition returned ",bass.BASS_ErrorGetCode())
     end
 end
 
@@ -112,7 +110,7 @@ local cbs = {
 
 local function rocket_update()
 	if cb_isplaying() then
-	  curtime_ms = curtime_ms + 16
+	    curtime_ms = curtime_ms + 16
 	end
 
     local uret = rk.sync_update(rocket.obj, ms_to_row_round(curtime_ms, rps), cbs)
