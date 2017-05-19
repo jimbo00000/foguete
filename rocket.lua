@@ -159,7 +159,9 @@ end
 
 function rocket.delete_key_from_table(track, row)
 	local tidx = track + 1
-	rocket.sync_tracks[tidx].keys[row] = nil
+	if rocket.sync_tracks[tidx] then
+		rocket.sync_tracks[tidx].keys[row] = nil
+	end
 end
 
 -- Coalesce 4 bytes read from a socket into one 32 bit int
