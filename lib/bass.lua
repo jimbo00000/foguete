@@ -57,7 +57,7 @@ ffi.cdef [[
     QWORD BASS_ChannelGetPosition(DWORD handle, DWORD mode);
     QWORD BASS_ChannelSeconds2Bytes(DWORD handle, double pos);
     double BASS_ChannelBytes2Seconds(DWORD handle, QWORD pos);
-
+    QWORD BASS_ChannelGetLength(DWORD handle, DWORD mode);
     HSAMPLE BASS_SampleLoad(BOOL mem, const void *file, QWORD offset, DWORD length, DWORD max, DWORD flags);
     HCHANNEL BASS_SampleGetChannel(HSAMPLE handle, BOOL onlynew);
 

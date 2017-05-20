@@ -39,6 +39,7 @@ local win_w = 800
 local win_h = 600
 
 local g_ft = fpstimer.create()
+local g_lastFrameTime = 0
 
 --[[
     Music attributes:
@@ -46,55 +47,59 @@ local g_ft = fpstimer.create()
     8 / 3.2 == 2.5 beats.second *60 == 150 bpm
 ]]
 local bpm = 150
-local song_end = 3.2
-
 local rpb = 8 -- rows per beat
-local row_rate = (bpm / 60) * rpb
-local row_time = 0.0
-local current_row = 0
-local last_sent_row = 0
-local paused = 1
-local stream = nil
+local rps = (bpm / 60) * rpb
+local curtime_ms = 0.0
 
-local g_lastFrameTime = 0
-local g_lastFilterSwapTime = 0
-local g_ft = fpstimer.create()
-local animParams = {}
+local function row_to_ms_round(row, rps) 
+    local newtime = row / rps
+    return math.floor(newtime * 1000 + .5)
+end
+
+local function ms_to_row_f(time_ms, rps) 
+    local row = rps * time_ms/1000
+    return row
+end
+
+local function ms_to_row_round(time_ms, rps)
+    local r = ms_to_row_f(time_ms, rps)
+    return math.floor(r + .5)
+end
 
 function bass_get_time()
-    if stream then
-        local pos = bass.BASS_ChannelGetPosition(stream, bass.BASS_POS_BYTE)
-        local time = bass.BASS_ChannelBytes2Seconds(stream, pos)
-        return time
-    end
+    if not stream then return 0 end
+    local pos = bass.BASS_ChannelGetPosition(stream, bass.BASS_POS_BYTE)
+    local time_s = bass.BASS_ChannelBytes2Seconds(stream, pos)
+    return time_s * 1000
 end
 
 function bass_get_row()
-    if stream then
-        return bass_get_time() * row_rate
-    end
+    if not stream then return 0 end
+    return bass_get_time() * rps
 end
 
 function cb_pause(flag)
-    if stream then
-        if flag == 1 then
-            bass.BASS_ChannelPause(stream)
-        else
-            bass.BASS_ChannelPlay(stream, false)
-        end
+    if not stream then return false end
+    if flag == 1 then
+        bass.BASS_ChannelPause(stream)
+    else
+        bass.BASS_ChannelPlay(stream, false)
     end
 end
 
 function cb_setrow(row)
-    current_row = row
-    last_sent_row = row
-    row_time = row / row_rate
+    local newtime_ms = row_to_ms_round(row, rps)
+    curtime_ms = newtime_ms
 
-    local pos = bass.BASS_ChannelSeconds2Bytes(stream, row / row_rate)
-    bass.BASS_ChannelSetPosition(stream, pos, bass.BASS_POS_BYTE)
+    local pos = bass.BASS_ChannelSeconds2Bytes(stream, curtime_ms/1000)
+    local ret = bass.BASS_ChannelSetPosition(stream, pos, bass.BASS_POS_BYTE)
+    if ret == 0 then
+        print("BASS_ChannelSetPosition returned ",bass.BASS_ErrorGetCode())
+    end
 end
 
 function cb_isplaying()
+    if not stream then return false end
     return (bass.BASS_ChannelIsActive(stream) == bass.BASS_ACTIVE_PLAYING)
 end
 
@@ -128,15 +133,14 @@ end
 
 function get_current_param_value_by_name(pname)
     if not rk then return end
-    return rk.get_value(pname, current_row)
+    return rk.get_value(pname, ms_to_row_round(curtime_ms, rps))
 end
 
 function timestep(absTime, dt)
     gfx.sync_params(get_current_param_value_by_name)
 
     if cb_isplaying() then
-        row_time = row_time + dt
-        current_row = row_rate * row_time
+        curtime_ms = curtime_ms + dt
         gfx.timestep(absTime, dt)
     else
         if socket then socket.sleep(0.001) end
@@ -149,13 +153,11 @@ function dofile(filename)
 end
 
 function main()
-
     local a = ffi.new("int[1]")
     local b = ffi.new("int[1]")
     local c = ffi.new("int[1]")
     glfw.glfw.GetVersion(a,b,c)
     print("glfw version "..a[0]..'.'..b[0]..'.'..c[0])
-
 
     if arg[1] and arg[1] == "sync" then
         SYNC_PLAYER = 1
@@ -233,6 +235,8 @@ function main()
 
     local init_ret = bass.BASS_Init(-1, 44100, 0, 0, nil)
     stream = bass.BASS_StreamCreateFile(false, "data/SimpleBeat.wav", 0, 0, bass.BASS_STREAM_PRESCAN)
+    local streamlen_bytes = bass.BASS_ChannelGetLength(stream, bass.BASS_POS_BYTE)
+    local streamlen_sec = bass.BASS_ChannelBytes2Seconds(stream, streamlen_bytes)
 
     gfx.setbpm(bpm)
 
@@ -248,7 +252,7 @@ function main()
     g_lastFrameTime = 0
     while glfw.glfw.WindowShouldClose(window) == 0 do
         if SYNC_PLAYER then
-            local uret = rk.sync_update(rocket.obj, current_row, cbs)
+            local uret = rk.sync_update(rocket.obj, ms_to_row_round(curtime_ms, rps), cbs)
             if uret and uret ~= 0 then
                 print("sync_update returned: "..uret)
                 --rk.connect_demo()
@@ -270,7 +274,9 @@ function main()
 
         if not SYNC_PLAYER then
             -- Quit at the end of the song
-            if now > song_end then
+            -- TODO: this is never reached.
+            if curtime_ms/1000 >= streamlen_sec then
+                print("Song done. Quitting...")
                 glfw.glfw.SetWindowShouldClose(window, true)
             end
         end
