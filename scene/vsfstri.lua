@@ -31,6 +31,7 @@ function vsfstri:init()
     self.posx = 0
     self.posy = 0
     self.rot = 0
+    self.col = 1
 end
 
 --local openGL = require("opengl")
@@ -69,12 +70,14 @@ precision mediump float;
 precision mediump int;
 #endif
 
+uniform float col;
+
 in vec3 vfColor;
 out vec4 fragColor;
 
 void main()
 {
-    fragColor = vec4(vfColor, 1.0);
+    fragColor = vec4(col * vfColor, 1.0);
 }
 ]]
 
@@ -142,8 +145,10 @@ function vsfstri:render_for_one_eye(view, proj)
     gl.glUseProgram(self.prog)
     local umv_loc = gl.glGetUniformLocation(self.prog, "mvmtx")
     local upr_loc = gl.glGetUniformLocation(self.prog, "prmtx")
+    local uc_loc = gl.glGetUniformLocation(self.prog, "col")
     gl.glUniformMatrix4fv(umv_loc, 1, GL.GL_FALSE, glFloatv(16, m))
     gl.glUniformMatrix4fv(upr_loc, 1, GL.GL_FALSE, glFloatv(16, proj))
+    gl.glUniform1f(uc_loc, self.col)
     gl.glBindVertexArray(self.vao)
     gl.glDrawArrays(GL.GL_TRIANGLES, 0, 3)
     gl.glBindVertexArray(0)

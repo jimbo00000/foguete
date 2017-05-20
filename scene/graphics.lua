@@ -101,6 +101,9 @@ graphics.sync_callbacks = {
     ["tri:rot"] = function(v)
         if Scene.rot then Scene.rot = v end
     end,
+    ["tri:col"] = function(v)
+        if Scene.col then Scene.col = v end
+    end,
     -- Add new keyframe names here
 }
 
