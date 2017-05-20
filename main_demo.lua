@@ -142,8 +142,6 @@ function timestep(absTime, dt)
     if cb_isplaying() then
         curtime_ms = curtime_ms + dt
         gfx.timestep(absTime, dt)
-    else
-        if socket then socket.sleep(0.001) end
     end
 end
 
@@ -270,7 +268,6 @@ function main()
         -- TODO: figure out why vsync isn't working
         local targetfps = 80
         if socket then socket.sleep(1/targetfps) end
-
 
         if not SYNC_PLAYER then
             -- Quit at the end of the song
