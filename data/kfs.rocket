@@ -7,6 +7,7 @@ color="ffb27474">
 		<key row="0" value="0.000000" interpolation="1" />
 		<key row="8" value="1.000000" interpolation="1" />
 		<key row="16" value="0.540000" interpolation="1" />
+		<key row="24" value="0.000000" interpolation="1" />
 		<key row="32" value="0.465000" interpolation="1" />
 		<key row="40" value="0.100000" interpolation="1" />
 		<key row="48" value="0.000000" interpolation="1" />
@@ -23,7 +24,11 @@ color="ffb28050">
 		<key row="56" value="0.000000" interpolation="1" />
 		<key row="64" value="0.000000" interpolation="0" />
 	</track>
-	<track name="Scene" folded="0" muteKeyCount="0" color="ffa9b250" />
+	<track name="Scene" folded="0" muteKeyCount="0" color="ffa9b250">
+		<key row="0" value="1.000000" interpolation="0" />
+		<key row="28" value="2.000000" interpolation="0" />
+		<key row="38" value="1.000000" interpolation="0" />
+	</track>
 	<track name="tri:rot" folded="0" muteKeyCount="0"
 color="ff60b250">
 		<key row="0" value="0.000000" interpolation="3" />
@@ -36,18 +41,24 @@ color="ff4fb292">
 		<key row="8" value="1.000000" interpolation="1" />
 		<key row="15" value="0.000000" interpolation="0" />
 		<key row="16" value="1.000000" interpolation="1" />
-		<key row="23" value="0.000000" interpolation="0" />
-		<key row="24" value="1.000000" interpolation="1" />
+		<key row="19" value="0.000000" interpolation="1" />
+		<key row="20" value="1.000000" interpolation="1" />
 		<key row="31" value="0.000000" interpolation="0" />
 		<key row="32" value="1.000000" interpolation="1" />
 		<key row="39" value="0.000000" interpolation="0" />
 		<key row="40" value="1.000000" interpolation="1" />
 		<key row="47" value="0.000000" interpolation="0" />
 		<key row="48" value="1.000000" interpolation="1" />
+		<key row="51" value="0.000000" interpolation="1" />
+		<key row="52" value="1.000000" interpolation="1" />
 		<key row="55" value="0.000000" interpolation="0" />
 		<key row="56" value="1.000000" interpolation="1" />
-		<key row="63" value="0.000000" interpolation="0" />
-		<key row="64" value="1.000000" interpolation="0" />
+		<key row="64" value="0.000000" interpolation="1" />
+	</track>
+	<track name="cube:rot" folded="0" muteKeyCount="0"
+color="ff4f71b2">
+		<key row="24" value="1.000000" interpolation="1" />
+		<key row="64" value="10.000000" interpolation="1" />
 	</track>
 </tracks>
 	</rootElement>

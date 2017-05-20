@@ -163,7 +163,6 @@ function colorcube:render_for_one_eye(view, proj)
 end
 
 function colorcube:timestep(absTime, dt)
-    self.rotation = absTime
 end
 
 return colorcube
