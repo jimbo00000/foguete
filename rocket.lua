@@ -100,7 +100,8 @@ function rocket.get_track(name)
 	return track
 end
 
-function rocket.get_value(name, row)
+function rocket.get_value(name, rowf)
+	local row = math.floor(rowf)
 	local track = rocket.get_track(name)
 	if not track then return 0 end
 
@@ -137,7 +138,7 @@ function rocket.get_value(name, row)
 	if not prv then
 		if k[kxt] then return k[nxt].val end
 	else
-		return key_interp(k[prv], k[nxt], row)
+		return key_interp(k[prv], k[nxt], rowf)
 	end
 	-- No next key found; use last
 	if prv and not nxt then

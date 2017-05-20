@@ -133,7 +133,7 @@ end
 
 function get_current_param_value_by_name(pname)
     if not rk then return end
-    return rk.get_value(pname, ms_to_row_round(curtime_ms, rps))
+    return rk.get_value(pname, ms_to_row_f(curtime_ms, rps))
 end
 
 function timestep(absTime, dt)
@@ -267,7 +267,7 @@ function main()
 
         -- TODO: figure out why vsync isn't working
         local targetfps = 80
-        if socket then socket.sleep(1/targetfps) end
+        --if socket then socket.sleep(1/targetfps) end
 
         if not SYNC_PLAYER then
             -- Quit at the end of the song
