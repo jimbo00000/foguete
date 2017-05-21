@@ -163,6 +163,16 @@ function main()
         SYNC_PLAYER = 1
     end
 
+    -- Load config file
+    if arg[1] and arg[1] == "compo" then
+        fullscreen = true
+        vsync = true
+        showfps = false
+    else
+        dofile('appconfig.lua')
+        win_w, win_h = window_w, window_h
+    end
+
     if SYNC_PLAYER then
         local success = rk.connect_demo()
         if success ~= 0 then
@@ -191,16 +201,6 @@ function main()
             os.exit(1)
         end
         if rk then rk.sync_tracks = module end
-    end
-
-    -- Load config file
-    if arg[1] and arg[1] == "compo" then
-        fullscreen = true
-        vsync = true
-        showfps = false
-    else
-        dofile('appconfig.lua')
-        win_w, win_h = window_w, window_h
     end
 
     print_glfw_version()
