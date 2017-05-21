@@ -265,10 +265,6 @@ function main()
         timestep(now, now - g_lastFrameTime)
         g_lastFrameTime = now
 
-        -- TODO: figure out why vsync isn't working
-        local targetfps = 80
-        --if socket then socket.sleep(1/targetfps) end
-
         if not SYNC_PLAYER then
             -- Quit at the end of the song
             -- TODO: this is never reached.
