@@ -150,13 +150,15 @@ function dofile(filename)
     return f()
 end
 
-function main()
+function print_glfw_version()
     local a = ffi.new("int[1]")
     local b = ffi.new("int[1]")
     local c = ffi.new("int[1]")
     glfw.glfw.GetVersion(a,b,c)
     print("glfw version "..a[0]..'.'..b[0]..'.'..c[0])
+end
 
+function main()
     if arg[1] and arg[1] == "sync" then
         SYNC_PLAYER = 1
     end
@@ -201,6 +203,7 @@ function main()
         win_w, win_h = window_w, window_h
     end
 
+    print_glfw_version()
     glfw.glfw.Init()
 
     local windowTitle = "Your Demo Here"
