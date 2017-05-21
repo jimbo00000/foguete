@@ -266,9 +266,10 @@ function main()
         g_lastFrameTime = now
 
         if not SYNC_PLAYER then
-            -- Quit at the end of the song
-            -- TODO: this is never reached.
-            if curtime_ms/1000 >= streamlen_sec then
+            -- Quit at the end of the song.
+            -- Subtract a row's worth of time as the current time is rounded
+            -- to the nearest row and will hang at end otherwise.
+            if curtime_ms/1000 >= (streamlen_sec-1/rps) then
                 print("Song done. Quitting...")
                 glfw.glfw.SetWindowShouldClose(window, true)
             end
