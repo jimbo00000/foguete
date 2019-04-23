@@ -38,6 +38,16 @@ function graphics.initGL()
     Scene = scenes[1]
 end
 
+function graphics.prerender()
+    gl.glDrawBuffer(GL.GL_NONE)
+    for k,v in pairs(scenes) do
+        local i = {}
+        mm.make_identity_matrix(i)
+        v:render_for_one_eye(i,i)
+    end
+    gl.glDrawBuffer(GL.GL_BACK)
+end
+
 function graphics.display()
     local b = .3
     gl.glClearColor(b,b,b,0)

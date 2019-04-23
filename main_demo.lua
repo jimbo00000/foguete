@@ -242,6 +242,8 @@ function main()
     local streamlen_sec = bass.BASS_ChannelBytes2Seconds(stream, streamlen_bytes)
 
     gfx.setbpm(bpm)
+    gfx.prerender()
+    glfw.glfw.SwapBuffers(window)
 
     bass.BASS_Start()
     bass.BASS_ChannelPlay(stream, false)
