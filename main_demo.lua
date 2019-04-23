@@ -8,7 +8,7 @@ if (ffi.os == "Windows") then
     package.loadlib("socket/core.dll", "luaopen_socket_core")
     socket = require 'socket.core'
 elseif (ffi.os == "Linux") then
-    package.cpath = package.cpath .. ';bin/linux/socket/?.so'
+    package.cpath = package.cpath .. ';bin/linux/'..jit.arch..'/socket/?.so'
     socket = require 'socket.core'
 end
 local fpstimer = require("util.fpstimer")
@@ -216,10 +216,12 @@ function main()
         print("Monitor mode:",mode.width, mode.height)
     end
 
-    glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MAJOR, 4)
-    glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MINOR, 1)
-    glfw.glfw.WindowHint(glfw.GLFW.OPENGL_FORWARD_COMPAT, 1)
-    glfw.glfw.WindowHint(glfw.GLFW.OPENGL_PROFILE, glfw.GLFW.OPENGL_CORE_PROFILE)
+	if jit.arch ~= "arm" then -- Guessing we're on the pi
+		glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MAJOR, 4)
+		glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MINOR, 1)
+		glfw.glfw.WindowHint(glfw.GLFW.OPENGL_FORWARD_COMPAT, 1)
+		glfw.glfw.WindowHint(glfw.GLFW.OPENGL_PROFILE, glfw.GLFW.OPENGL_CORE_PROFILE)
+	end
 
     window = glfw.glfw.CreateWindow(win_w,win_h,windowTitle,monitor,nil)
     glfw.glfw.MakeContextCurrent(window)

@@ -8,7 +8,7 @@ if (ffi.os == "Windows") then
     package.loadlib("socket/core.dll", "luaopen_socket_core")
     socket = require 'socket.core'
 elseif (ffi.os == "Linux") then
-    package.cpath = package.cpath .. ';bin/linux/socket/?.so'
+    package.cpath = package.cpath .. ';bin/linux/'..jit.arch..'/socket/?.so'
     socket = require 'socket.core'
 end
 
