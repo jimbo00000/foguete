@@ -15,6 +15,8 @@ local fpstimer = require("util.fpstimer")
 
 package.path = package.path .. ';lib/?.lua'
 
+package.cpath = package.cpath .. ';bin/osx/*.dylib'
+
 -- http://stackoverflow.com/questions/17877224/how-to-prevent-a-lua-script-from-failing-when-a-require-fails-to-find-the-scri
 local function prequire(m)
   local ok, err = pcall(require, m)
@@ -217,8 +219,8 @@ function main()
     end
 
 	if jit.arch ~= "arm" then -- Guessing we're on the pi
-		glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MAJOR, 4)
-		glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MINOR, 1)
+		glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MAJOR, 3)
+		glfw.glfw.WindowHint(glfw.GLFW.CONTEXT_VERSION_MINOR, 3)
 		glfw.glfw.WindowHint(glfw.GLFW.OPENGL_FORWARD_COMPAT, 1)
 		glfw.glfw.WindowHint(glfw.GLFW.OPENGL_PROFILE, glfw.GLFW.OPENGL_CORE_PROFILE)
 	end
