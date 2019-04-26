@@ -105,7 +105,7 @@ function cb_isplaying()
     return (bass.BASS_ChannelIsActive(stream) == bass.BASS_ACTIVE_PLAYING)
 end
 
-local cbs = {
+local callbacks = {
     ["pause"] = cb_pause,
     ["setrow"] = cb_setrow,
     ["isplaying"] = cb_isplaying,
@@ -259,7 +259,7 @@ function main()
     g_lastFrameTime = 0
     while glfw.glfw.WindowShouldClose(window) == 0 do
         if SYNC_PLAYER then
-            local uret = rk.sync_update(rocket.obj, ms_to_row_round(curtime_ms, rps), cbs)
+            local uret = rk.sync_update(rocket.obj, ms_to_row_round(curtime_ms, rps), callbacks)
             if uret and uret ~= 0 then
                 print("sync_update returned: "..uret)
                 --rk.connect_demo()
