@@ -113,7 +113,7 @@ local cbs = {
 
 function onkey(window,k,code,action,mods)
     if action == glfw.GLFW.PRESS or action == glfw.GLFW.REPEAT then
-        if k == glfw.GLFW.KEY_ESCAPE then os.exit(0)
+        if k == glfw.GLFW.KEY_ESCAPE then glfw.glfwSetWindowShouldClose(window, true)
         end
     end
 end
