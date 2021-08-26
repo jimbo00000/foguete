@@ -1,4 +1,15 @@
--- main_demo.lua
+--[[
+    main_demo.lua
+
+    Creates a window, graphics and audio context, and plays the demo.
+    Plays standalone for release or may connect to a running editor via socket. 
+]]
+
+-- SimpleBeat.wav - length 3.2s, 8 beats
+-- 8 / 3.2 == 2.5 beats.second *60 == 150 bpm
+local MUSIC_FILENAME = "data/SimpleBeat.wav"
+local MUSIC_BPM = 150
+
 
 local bit = require("bit")
 local ffi = require("ffi")
@@ -43,12 +54,7 @@ local win_h = 600
 local g_ft = fpstimer.create()
 local g_lastFrameTime = 0
 
---[[
-    Music attributes:
-    SimpleBeat.wav - length 3.2s, 8 beats
-    8 / 3.2 == 2.5 beats.second *60 == 150 bpm
-]]
-local bpm = 150
+local bpm = MUSIC_BPM
 local rpb = 8 -- rows per beat
 local rps = (bpm / 60) * rpb
 local curtime_ms = 0.0
@@ -239,7 +245,7 @@ function main()
     resize(window, win_w, win_h)
 
     local init_ret = bass.BASS_Init(-1, 44100, 0, 0, nil)
-    stream = bass.BASS_StreamCreateFile(false, "data/SimpleBeat.wav", 0, 0, bass.BASS_STREAM_PRESCAN)
+    stream = bass.BASS_StreamCreateFile(false, MUSIC_FILENAME, 0, 0, bass.BASS_STREAM_PRESCAN)
     local streamlen_bytes = bass.BASS_ChannelGetLength(stream, bass.BASS_POS_BYTE)
     local streamlen_sec = bass.BASS_ChannelBytes2Seconds(stream, streamlen_bytes)
 
