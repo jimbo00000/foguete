@@ -43,7 +43,7 @@ function graphics.prerender()
     for k,v in pairs(scenes) do
         local i = {}
         mm.make_identity_matrix(i)
-        v:render_for_one_eye(i,i)
+        v:renderEye(i,i,i)
     end
     gl.glDrawBuffer(GL.GL_BACK)
 end
@@ -76,7 +76,9 @@ function graphics.display()
         local p = {}
         local aspect = win_w / win_h
         mm.glh_perspective_rh(p, 90, aspect, .004, 500)
-        Scene:render_for_one_eye(v,p)
+
+        local m = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}
+        Scene:renderEye(m,v,p)
         if Scene.set_origin_matrix then Scene:set_origin_matrix(v) end
     end
 end

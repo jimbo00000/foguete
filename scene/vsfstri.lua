@@ -135,7 +135,7 @@ function vsfstri:exitGL()
     gl.glBindVertexArray(0)
 end
 
-function vsfstri:render_for_one_eye(view, proj)
+function vsfstri:renderEye(model, view, proj)
     local m = {}
     for i=1,16 do m[i] = view[i] end
     mm.glh_translate(m, self.posx, self.posy, 0)

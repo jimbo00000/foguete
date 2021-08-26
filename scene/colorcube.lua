@@ -142,7 +142,7 @@ function colorcube:exitGL()
     gl.glDeleteVertexArrays(1, vaoId)
 end
 
-function colorcube:render_for_one_eye(view, proj)
+function colorcube:renderEye(model, view, proj)
     -- Rotate the cube slowly around its center
     local m = {}
     for i=1,16 do m[i] = view[i] end
