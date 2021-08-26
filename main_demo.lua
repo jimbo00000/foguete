@@ -119,7 +119,8 @@ local callbacks = {
 
 function onkey(window,k,code,action,mods)
     if action == glfw.GLFW.PRESS or action == glfw.GLFW.REPEAT then
-        if k == glfw.GLFW.KEY_ESCAPE then glfw.glfwSetWindowShouldClose(window, true)
+        if k == glfw.GLFW.KEY_ESCAPE then glfw.glfw.SetWindowShouldClose(window, true)
+            print("Escape key pressed, quitting.")
         end
     end
 end
