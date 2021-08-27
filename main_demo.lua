@@ -154,9 +154,8 @@ end
 function timestep(absTime, dt)
     gfx.sync_params(get_current_param_value_by_name)
 
---        if not SYNC_PLAYER then
---todo sync
-    if cb_isplaying() then
+    local standalone = not SYNC_PLAYER
+    if standalone or cb_isplaying() then
         curtime_ms = curtime_ms + dt
         gfx.timestep(absTime, dt)
     end
@@ -297,11 +296,8 @@ function main()
 
         if not SYNC_PLAYER then
             -- Quit at the end of the song.
-            -- Subtract a row's worth of time as the current time is rounded
-            -- to the nearest row and will hang at end otherwise.
-            ---TODO: fix
-            if curtime_ms/1000 >= (streamlen_sec-1/rps) then
-                print("Song done. Quitting...")
+            if curtime_ms/1000 >= streamlen_sec then
+                print("Song done after "..streamlen_sec.."s. Quitting...")
                 glfw.glfw.SetWindowShouldClose(window, true)
             end
         end
