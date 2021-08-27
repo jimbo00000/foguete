@@ -1,8 +1,13 @@
---[[
-    main_demo.lua
+-- main_demo.lua
+local helpMsg = [[
+A minimal example demo.
+Creates a window, graphics and audio context, and plays the demo.
+Plays standalone for release or may connect to a running editor via socket. 
 
-    Creates a window, graphics and audio context, and plays the demo.
-    Plays standalone for release or may connect to a running editor via socket. 
+Options:
+help  : displays this message and exits
+sync  : attempts to connect to editor
+compo : runs standalone in fullscreen
 ]]
 
 -- SimpleBeat.wav - length 3.2s, 8 beats
@@ -171,7 +176,11 @@ function print_glfw_version()
 end
 
 function main()
-    ---TODO: help option
+    if arg[1] and (arg[1] == "help" or string.match(arg[1], "?")) then
+        print(helpMsg)
+        os.exit()
+    end
+
     if arg[1] and arg[1] == "sync" then
         SYNC_PLAYER = 1
     end

@@ -1,7 +1,6 @@
 -- rocket.lua
 
 local ffi = require( "ffi" )
-print(ffi.os)
 local socket = nil
 if (ffi.os == "Windows") then
     package.cpath = package.cpath .. ';bin/windows/socket/core.dll'
