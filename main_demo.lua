@@ -8,6 +8,7 @@
 -- SimpleBeat.wav - length 3.2s, 8 beats
 -- 8 / 3.2 == 2.5 beats.second *60 == 150 bpm
 local MUSIC_FILENAME = "data/SimpleBeat.wav"
+local MUSIC_SAMPLERATE = 44100
 local MUSIC_BPM = 150
 
 
@@ -148,6 +149,8 @@ end
 function timestep(absTime, dt)
     gfx.sync_params(get_current_param_value_by_name)
 
+--        if not SYNC_PLAYER then
+--todo sync
     if cb_isplaying() then
         curtime_ms = curtime_ms + dt
         gfx.timestep(absTime, dt)
@@ -168,6 +171,7 @@ function print_glfw_version()
 end
 
 function main()
+    ---TODO: help option
     if arg[1] and arg[1] == "sync" then
         SYNC_PLAYER = 1
     end
@@ -245,7 +249,7 @@ function main()
     initGL()
     resize(window, win_w, win_h)
 
-    local init_ret = bass.BASS_Init(-1, 44100, 0, 0, nil)
+    local init_ret = bass.BASS_Init(-1, MUSIC_SAMPLERATE, 0, 0, nil)
     stream = bass.BASS_StreamCreateFile(false, MUSIC_FILENAME, 0, 0, bass.BASS_STREAM_PRESCAN)
     local streamlen_bytes = bass.BASS_ChannelGetLength(stream, bass.BASS_POS_BYTE)
     local streamlen_sec = bass.BASS_ChannelBytes2Seconds(stream, streamlen_bytes)
@@ -257,6 +261,7 @@ function main()
     bass.BASS_Start()
     bass.BASS_ChannelPlay(stream, false)
 
+    ---TODO: param
     --if true then
         glfw.glfw.SwapInterval(1)
    -- else
@@ -285,6 +290,7 @@ function main()
             -- Quit at the end of the song.
             -- Subtract a row's worth of time as the current time is rounded
             -- to the nearest row and will hang at end otherwise.
+            ---TODO: fix
             if curtime_ms/1000 >= (streamlen_sec-1/rps) then
                 print("Song done. Quitting...")
                 glfw.glfw.SetWindowShouldClose(window, true)
