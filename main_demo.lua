@@ -15,6 +15,7 @@ compo : runs standalone in fullscreen
 local MUSIC_FILENAME = "data/SimpleBeat.wav"
 local MUSIC_SAMPLERATE = 44100
 local MUSIC_BPM = 150
+local windowTitle = "Your Demo Here"
 
 
 local bit = require("bit")
@@ -123,6 +124,11 @@ local callbacks = {
     ["isplaying"] = cb_isplaying,
 }
 
+function get_current_param_value_by_name(pname)
+    if not rk then return end
+    return rk.get_value(pname, ms_to_row_f(curtime_ms, rps))
+end
+
 function onkey(window,k,code,action,mods)
     if action == glfw.GLFW.PRESS or action == glfw.GLFW.REPEAT then
         if k == glfw.GLFW.KEY_ESCAPE then glfw.glfw.SetWindowShouldClose(window, true)
@@ -130,6 +136,17 @@ function onkey(window,k,code,action,mods)
         end
     end
 end
+
+function timestep(absTime, dt)
+    gfx.sync_params(get_current_param_value_by_name)
+
+    local standalone = not SYNC_PLAYER
+    if standalone or cb_isplaying() then
+        curtime_ms = curtime_ms + dt
+        gfx.timestep(absTime, dt)
+    end
+end
+
 
 function initGL()
     gfx.initGL()
@@ -144,26 +161,6 @@ function resize(window, w, h)
     win_h = h
     gl.glViewport(0,0, win_w, win_h)
     gfx.resize(w, h)
-end
-
-function get_current_param_value_by_name(pname)
-    if not rk then return end
-    return rk.get_value(pname, ms_to_row_f(curtime_ms, rps))
-end
-
-function timestep(absTime, dt)
-    gfx.sync_params(get_current_param_value_by_name)
-
-    local standalone = not SYNC_PLAYER
-    if standalone or cb_isplaying() then
-        curtime_ms = curtime_ms + dt
-        gfx.timestep(absTime, dt)
-    end
-end
-
-function dofile(filename)
-    local f = assert(loadfile(filename))
-    return f()
 end
 
 function print_glfw_version()
@@ -184,12 +181,16 @@ function main()
         SYNC_PLAYER = 1
     end
 
-    -- Load config file
     if arg[1] and arg[1] == "compo" then
         fullscreen = true
-        vsync = true
+        swapinterval = 1
         showfps = false
     else
+        -- Load config file
+        function dofile(filename)
+            local f = assert(loadfile(filename))
+            return f()
+        end
         dofile('appconfig.lua')
         win_w, win_h = window_w, window_h
     end
@@ -227,7 +228,6 @@ function main()
     print_glfw_version()
     glfw.glfw.Init()
 
-    local windowTitle = "Your Demo Here"
     local monitor = nil
     if fullscreen == true then monitor = glfw.glfw.GetPrimaryMonitor() end
     if monitor then
@@ -264,17 +264,11 @@ function main()
 
     gfx.setbpm(bpm)
     gfx.prerender()
+    glfw.glfw.SwapInterval(swapinterval)
     glfw.glfw.SwapBuffers(window)
 
     bass.BASS_Start()
     bass.BASS_ChannelPlay(stream, false)
-
-    ---TODO: param
-    --if true then
-        glfw.glfw.SwapInterval(1)
-   -- else
-        --glfw.glfw.SwapInterval(0)
-    --end
 
     g_lastFrameTime = 0
     while glfw.glfw.WindowShouldClose(window) == 0 do
@@ -295,7 +289,6 @@ function main()
         g_lastFrameTime = now
 
         if not SYNC_PLAYER then
-            -- Quit at the end of the song.
             if curtime_ms/1000 >= streamlen_sec then
                 print("Song done after "..streamlen_sec.."s. Quitting...")
                 glfw.glfw.SetWindowShouldClose(window, true)

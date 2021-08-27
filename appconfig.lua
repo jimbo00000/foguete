@@ -1,6 +1,6 @@
 -- appconfig.lua
 
-window_w, window_h = 1920/2,1080/2
+window_w, window_h = 1920/4,1080/4
 fullscreen = false
-vsync = false
+swapinterval = 0
 showfps = true
