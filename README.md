@@ -1,5 +1,5 @@
 # foguete
-Luajit demo framework based on rocket
+Luajit demo framework based on [emoon/rocket](https://github.com/emoon/rocket) and [opengl-with-luajit](https://bitbucket.org/jimbo00000/opengl-with-luajit/src/master/)
 
 ![foguete Logo](foguete.png)
 
@@ -7,31 +7,38 @@ Foguete is Portuguese for 'rocket'. It provides a Luajit module for interacting 
 
 ## Instructions
 
+
+### Editing
+Launch the editor app: `bin/GLeditor.exe`  
+on Linux:
+```
+$ LD_LIBRARY_PATH=external/bass/linux/ ./t2-output/linux-gcc-release-default/editor
+```
+
+Press **ctrl-o** in editor to open a file of rocket keyframes(e.g., `data/kfs.rocket`)
+- Linux: type file path in console. **Ctrl-1**,2,3,4 are shortcuts for last used files.
+
+
+
 ### Graphics
 
-Launch the `main_glfw` app with the `debug` parameter. Use the mouse to rotate objects and ctrl-tab/shift-ctrl-tab to browse scenes.
+Launch luajit with `main_glfw` and the `sync` parameter.
 
-```
-luajit main_glfw.lua debug
-```
+`bin\windows\luajit main_demo.lua sync` 
 
-Add new scene files to `graphics.lua` here: [graphics.lua#L33](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L33)
+`$ LD_LIBRARY_PATH=./bin/linux/x64 ./bin/linux/x64/luajit main_demo.lua sync`
 
-
-### Choreography
-
-Launch the editor app: `bin/GLeditor.exe`.  
-From there, open the file `keyframes/kfs.rocket`.  
-Launch the `main_demo` app with the `sync` parameter: `bin\windows\luajit main_demo.lua sync`  
-Play back the demo by pressing space in the editor.  
-Add a new variable to a scene module (module scoped for external access).  
-Add a new keyframe handler to `graphics.lua` here: [graphics.lua#L230](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L230)  
-
+Drive the demo with keys and mouse control in editor while the demo is connected via socket.  
 Press space in the editor to play/pause.  
 Scrub with the mousewheel.  
 Edit.  
 Repeat.  
 
+Add new scene files to the `scene/` directory, and their names to `graphics.lua` here: [graphics.lua#L7](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L7)
+
+Add new variable values for editing in rocket here: [graphics.lua#L18](https://github.com/jimbo00000/foguete/blob/master/scene/graphics.lua#L18)
+
+Replace the included music with your own by editing the values at the top of `main_demo.lua`.  
 
 ### Release
 
