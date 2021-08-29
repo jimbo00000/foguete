@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rootElement>
+<tracks rows="10000" startRow="0" endRow="10000" rowsPerBeat="8"
+beatsPerMin="125">
+	<track name="Scene" folded="0" muteKeyCount="0" color="ffb27474">
+		<key row="0" value="1.000000" interpolation="0" />
+		<key row="48" value="2.000000" interpolation="0" />
+		<key row="72" value="1.000000" interpolation="0" />
+	</track>
+	<track name="cube:rot" folded="0" muteKeyCount="0"
+color="ffb28050">
+		<key row="48" value="0.300000" interpolation="0" />
+		<key row="51" value="0.900000" interpolation="0" />
+		<key row="54" value="1.800000" interpolation="0" />
+		<key row="57" value="2.200000" interpolation="0" />
+		<key row="60" value="3.300000" interpolation="0" />
+		<key row="63" value="4.400000" interpolation="0" />
+		<key row="66" value="4.900000" interpolation="0" />
+	</track>
+	<track name="tri:col" folded="0" muteKeyCount="0"
+color="ffa9b250">
+		<key row="0" value="1.000000" interpolation="0" />
+	</track>
+	<track name="tri:posx" folded="0" muteKeyCount="0"
+color="ff60b250">
+		<key row="27" value="0.300000" interpolation="0" />
+		<key row="30" value="-0.300000" interpolation="0" />
+		<key row="33" value="1.000000" interpolation="0" />
+		<key row="72" value="0.000000" interpolation="0" />
+		<key row="84" value="0.000000" interpolation="0" />
+		<key row="90" value="0.400000" interpolation="0" />
+	</track>
+	<track name="tri:posy" folded="0" muteKeyCount="0"
+color="ff4fb292">
+		<key row="24" value="0.000000" interpolation="0" />
+		<key row="27" value="0.000000" interpolation="0" />
+		<key row="30" value="0.000000" interpolation="0" />
+		<key row="33" value="-0.900000" interpolation="0" />
+		<key row="72" value="0.000000" interpolation="3" />
+		<key row="78" value="-1.200000" interpolation="3" />
+		<key row="84" value="0.500000" interpolation="0" />
+		<key row="90" value="-1.400000" interpolation="0" />
+	</track>
+	<track name="tri:rot" folded="0" muteKeyCount="0"
+color="ff4f71b2">
+		<key row="0" value="45.000000" interpolation="0" />
+		<key row="6" value="90.000000" interpolation="0" />
+		<key row="12" value="45.000000" interpolation="0" />
+		<key row="18" value="0.000000" interpolation="0" />
+		<key row="24" value="45.000000" interpolation="0" />
+		<key row="33" value="45.000000" interpolation="2" />
+		<key row="34" value="30.000000" interpolation="2" />
+		<key row="35" value="45.000000" interpolation="2" />
+		<key row="36" value="75.000000" interpolation="2" />
+		<key row="37" value="45.000000" interpolation="2" />
+		<key row="38" value="30.000000" interpolation="2" />
+		<key row="39" value="45.000000" interpolation="2" />
+		<key row="40" value="75.000000" interpolation="2" />
+		<key row="41" value="45.000000" interpolation="2" />
+		<key row="42" value="30.000000" interpolation="2" />
+		<key row="43" value="45.000000" interpolation="0" />
+		<key row="51" value="0.000000" interpolation="0" />
+		<key row="54" value="-60.000000" interpolation="0" />
+		<key row="57" value="-30.000000" interpolation="0" />
+		<key row="60" value="0.000000" interpolation="0" />
+		<key row="63" value="30.000000" interpolation="0" />
+		<key row="72" value="0.000000" interpolation="2" />
+		<key row="78" value="-60.000000" interpolation="2" />
+		<key row="84" value="0.000000" interpolation="0" />
+		<key row="90" value="56.000000" interpolation="0" />
+	</track>
+	<track name="tri:scale" folded="0" muteKeyCount="0"
+color="ff8850b2">
+		<key row="0" value="1.000000" interpolation="0" />
+		<key row="24" value="1.200000" interpolation="0" />
+		<key row="27" value="1.500000" interpolation="0" />
+		<key row="30" value="1.700000" interpolation="0" />
+		<key row="33" value="2.000000" interpolation="0" />
+		<key row="72" value="1.000000" interpolation="1" />
+		<key row="85" value="2.000000" interpolation="0" />
+		<key row="90" value="3.000000" interpolation="0" />
+	</track>
+</tracks>
+	</rootElement>
