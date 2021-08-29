@@ -31,6 +31,7 @@ function vsfstri:init()
     self.posx = 0
     self.posy = 0
     self.rot = 0
+    self.scale = 1
     self.col = 1
 end
 
@@ -136,10 +137,19 @@ function vsfstri:exitGL()
 end
 
 function vsfstri:renderEye(model, view, proj)
+    -- Overwrite any "member" vars with values from a specific rocket sub-table
+    local myTable = "tri"
+    if self.syncVars and self.syncVars[myTable] then
+        for k,v in pairs(self.syncVars[myTable]) do
+            self[k] = v
+        end
+    end
+
     local m = {}
     for i=1,16 do m[i] = view[i] end
     mm.glh_translate(m, self.posx, self.posy, 0)
     mm.glh_rotate(m, self.rot, 0,0,1)
+    mm.glh_scale(m, self.scale, self.scale, self.scale)
 
     gl.glUseProgram(self.prog)
     local umv_loc = gl.glGetUniformLocation(self.prog, "mvmtx")

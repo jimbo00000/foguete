@@ -22,7 +22,7 @@ function colorcube:init()
     self.vbos = {}
     self.vao = 0
     self.prog = 0
-    self.rotation = 0
+    self.rot = 0
 end
 
 --local openGL = require("opengl")
@@ -143,11 +143,19 @@ function colorcube:exitGL()
 end
 
 function colorcube:renderEye(model, view, proj)
+    -- Overwrite any "member" vars with values from a specific rocket sub-table
+    local myTable = "cube"
+    if self.syncVars and self.syncVars[myTable] then
+        for k,v in pairs(self.syncVars[myTable]) do
+            self[k] = v
+        end
+    end
+
     -- Rotate the cube slowly around its center
     local m = {}
     for i=1,16 do m[i] = view[i] end
-    mm.glh_rotate(m, 30*self.rotation, 0,1,0)
-    mm.glh_rotate(m, 13*self.rotation, 1,0,0)
+    mm.glh_rotate(m, 30*self.rot, 0,1,0)
+    mm.glh_rotate(m, 13*self.rot, 1,0,0)
     mm.glh_translate(m, -.5,-.5,-.5)
 
     local umv_loc = gl.glGetUniformLocation(self.prog, "mvmtx")

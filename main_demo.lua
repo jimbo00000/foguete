@@ -12,9 +12,9 @@ compo : runs standalone in fullscreen
 
 -- SimpleBeat.wav - length 3.2s, 8 beats
 -- 8 / 3.2 == 2.5 beats.second *60 == 150 bpm
-local MUSIC_FILENAME = "data/SimpleBeat.wav"
+local MUSIC_FILENAME = "data/Humoresque.wav"
 local MUSIC_SAMPLERATE = 44100
-local MUSIC_BPM = 150
+local MUSIC_BPM = 100
 local windowTitle = "Your Demo Here"
 
 
@@ -203,7 +203,7 @@ function main()
         end
         -- Sort keys before inserting
         alphakeys = {}
-        for n in pairs(gfx.sync_callbacks) do table.insert(alphakeys, n) end
+        for _,n in pairs(gfx.trackNames) do table.insert(alphakeys, n) end
         table.sort(alphakeys)
         for _,k in ipairs(alphakeys) do
             print("Create track: ",k)
@@ -299,6 +299,7 @@ function main()
             if (ffi.os == "Windows") then
                 glfw.glfw.SetWindowTitle(window, windowTitle.." "..math.floor(g_ft:getFPS()).." fps")
             end
+            --print(g_ft:getFPS())
         end
         glfw.glfw.SwapBuffers(window)
 

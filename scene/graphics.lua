@@ -1,8 +1,27 @@
 -- graphics.lua
+local graphics = {}
+
+local scene_names = {
+    "vsfstri",
+    "colorcube",
+    -- Add new scenes here
+}
+
+local trackNames = {
+    "Scene",
+    "cube:rot",
+    "tri:col",
+    "tri:posx",
+    "tri:posy",
+    "tri:rot",
+    "tri:scale",
+    -- Add new keyframe names here
+}
+
+-- main_demo reports all these to the Editor on launch
+graphics.trackNames = trackNames
 
 local mm = require("util.matrixmath")
-
-local graphics = {}
 
 -- Window info
 local win_w = 800
@@ -17,10 +36,6 @@ graphics.chassis = {0,0,1}
 
 local Scene = nil
 local scenedir = "scene"
-local scene_names = {
-    "vsfstri",
-    "colorcube",
-}
 local scenes = {}
 
 -- Load  and call initGL on all scenes at startup
@@ -96,44 +111,40 @@ function graphics.setbpm(bpm)
     Scene.BPM = bpm
 end
 
--- A table of handlers for different track name-value pairs coming from
--- the rocket module. Values may be updated by messages from the editor.
--- Keys must match track names sent to editor.
-graphics.sync_callbacks = {
-    ["Scene"] = function(v)
-        -- Switch scenes with an index
-        if scenes[v] then Scene = scenes[v] end
-    end,
-    ["tri:posx"] = function(v)
-        if Scene.posx then Scene.posx = v end
-    end,
-    ["tri:posy"] = function(v)
-        if Scene.posy then Scene.posy = v end
-    end,
-    ["tri:rot"] = function(v)
-        if Scene.rot then Scene.rot = v end
-    end,
-    ["tri:col"] = function(v)
-        if Scene.col then Scene.col = v end
-    end,
-    ["cube:rot"] = function(v)
-        if Scene.rotation then Scene.rotation = v end
-    end,
-    -- Add new keyframe names here
-}
-
 function graphics.sync_params(get_param_value_at_current_time)
     -- The get_param_value_at_current_time function
     -- calls into rocket's track list of keyframes
     -- with the current time(according to main) as a parameter.
-    local f = get_param_value_at_current_time
-    if not f then return end
+    if not get_param_value_at_current_time then return end
 
-    for trackname,_ in pairs(graphics.sync_callbacks) do
-        local val = f(trackname)
-        local g = graphics.sync_callbacks[trackname]
-        if g and val then g(val) end
+    local syncVars = {}
+    for _,trackname in pairs(trackNames) do
+        -- Split a:b name into a.b as lua tables
+        last = trackname
+        nextlast = nil
+        -- Get last token of x:y colon-delimited string
+        for a,b in string.gmatch(trackname, "(%w+):(%w+)") do
+            nextlast = a
+            last = b
+        end
+
+        -- Target a specific sub-table
+        local targetTable = syncVars
+        if nextlast then
+            if not syncVars[nextlast] then
+                local subTable = {}
+                syncVars[nextlast] = subTable
+            end
+            targetTable = syncVars[nextlast]
+        end
+
+        local val = get_param_value_at_current_time(trackname)
+        if val then
+            targetTable[last] = val
+        end
     end
+    Scene = scenes[syncVars.Scene]
+    Scene.syncVars = syncVars
 end
 
 return graphics
